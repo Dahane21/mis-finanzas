@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Mis Finanzas</title>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--text:#18212f;--muted:#6b7280;--green:#18a36b;--greenbg:#e9f8f1;--orange:#e58b19;--orangebg:#fff4e5;--blue:#3478d4;--bluebg:#eaf2ff;--red:#d94b4b;--line:#e7eaf0;--shadow:0 6px 24px rgba(26,38,60,.08)}*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}.app{max-width:760px;margin:auto;min-height:100vh;padding-bottom:92px}.top{padding:22px 18px 10px}.top h1{font-size:25px;margin:0}.top p{color:var(--muted);margin:5px 0 0;font-size:13px}.page{display:none;padding:8px 14px 22px}.page.active{display:block}.kpis{display:grid;grid-template-columns:1fr;gap:10px}.kpi{border:0;border-radius:18px;padding:18px;text-align:left;box-shadow:var(--shadow);cursor:pointer}.kpi small{display:block;font-weight:700;letter-spacing:.02em;margin-bottom:5px}.kpi strong{font-size:30px}.kpi p{margin:5px 0 0;font-size:12px;opacity:.75}.green{background:var(--greenbg);color:#08764c}.orange{background:var(--orangebg);color:#a35a00}.blue{background:var(--bluebg);color:#215ca9}.card{background:var(--card);border-radius:18px;padding:16px;margin-top:12px;box-shadow:var(--shadow)}.card h2{font-size:17px;margin:0 0 12px}.row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}.row:last-child{border-bottom:0}.sub{font-size:12px;color:var(--muted)}.amt{font-weight:800;white-space:nowrap}.pos{color:var(--green)}.neg{color:var(--red)}button{font:inherit}.primary{width:100%;border:0;background:#18212f;color:white;padding:15px;border-radius:14px;font-weight:800;cursor:pointer}.secondary{border:1px solid var(--line);background:white;padding:11px 13px;border-radius:12px;font-weight:700;cursor:pointer}.chips{display:flex;gap:8px;flex-wrap:wrap}.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 13px;font-size:13px;font-weight:700;cursor:pointer}.chip.active{background:#18212f;color:#fff;border-color:#18212f}.field{margin:14px 0}.field label{display:block;font-size:12px;font-weight:800;margin-bottom:7px;color:#4b5563}.field input,.field select{width:100%;padding:14px;border:1px solid #dce1e9;border-radius:13px;background:#fff;font-size:16px;outline:none}.moneyInput{font-size:32px!important;font-weight:800;text-align:center}.nav{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:min(760px,100%);display:grid;grid-template-columns:repeat(4,1fr);background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:8px 6px 12px;z-index:20}.nav button{border:0;background:none;color:#7b8492;font-size:11px;padding:7px 2px;cursor:pointer}.nav button b{display:block;font-size:20px;margin-bottom:2px}.nav button.active{color:#18212f;font-weight:800}.sectionTitle{font-size:13px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.05em;margin:17px 4px 8px}.debtHead{display:flex;justify-content:space-between;align-items:start}.badge{font-size:11px;background:#f1f3f6;padding:5px 8px;border-radius:999px;color:#596273}.progress{height:7px;background:#eef0f4;border-radius:99px;overflow:hidden;margin:10px 0}.progress i{display:block;height:100%;background:#18212f;border-radius:99px}.projectionTotal{text-align:center;padding:12px}.projectionTotal small{color:var(--muted);font-weight:700}.projectionTotal strong{display:block;font-size:34px;margin-top:4px}.simResult{padding:14px;border-radius:14px;margin-top:12px;background:#f5f7fa}.warning{background:#fff0f0;color:#a92929}.ok{background:#eaf8f1;color:#08764c}.modal{position:fixed;inset:0;background:rgba(14,20,30,.42);display:none;align-items:flex-end;justify-content:center;z-index:50}.modal.open{display:flex}.sheet{background:white;width:min(760px,100%);max-height:80vh;overflow:auto;border-radius:24px 24px 0 0;padding:20px}.sheet h2{margin:0 0 10px}.close{float:right;border:0;background:#f1f3f5;border-radius:50%;width:34px;height:34px;cursor:pointer}.tiny{font-size:11px;color:var(--muted)}.empty{text-align:center;color:var(--muted);padding:20px}.editBtns{display:flex;gap:5px}.mini{border:0;background:#f1f3f5;border-radius:8px;padding:6px 8px;cursor:pointer}.danger{color:var(--red)}@media(min-width:600px){.kpis{grid-template-columns:repeat(3,1fr)}.kpi strong{font-size:25px}}
+
+.wizardChoices{display:grid;grid-template-columns:1fr 1fr;gap:12px}.wizardChoice{min-height:78px;border:1px solid var(--line);background:#fff;border-radius:18px;font-weight:800;font-size:15px;cursor:pointer}.wizardBack{border:0;background:none;padding:0;color:#526071;font-weight:800;cursor:pointer}.wizardHead{display:flex;align-items:center;gap:10px;margin-bottom:16px}.wizardHead h2{margin:0}.quickGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.quickBtn{border:1px solid var(--line);background:#fff;border-radius:13px;padding:13px 8px;font-weight:750;cursor:pointer}.quickBtn.active{background:#18212f;color:#fff}.debtCard{cursor:pointer;transition:.15s}.debtCard:active{transform:scale(.99)}.debtHint{font-size:11px;color:var(--blue);font-weight:800;margin-top:8px}.matrixScroll{overflow:auto;border:1px solid var(--line);border-radius:14px}.matrix{border-collapse:separate;border-spacing:0;min-width:950px;width:100%;font-size:12px}.matrix th,.matrix td{padding:10px 9px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);text-align:right;vertical-align:top;background:#fff}.matrix th{background:#f5f7fa;position:sticky;top:0;z-index:2}.matrix th:first-child,.matrix td:first-child{position:sticky;left:0;text-align:left;z-index:3;font-weight:800;background:#fff;min-width:120px}.matrix th:first-child{background:#f5f7fa;z-index:4}.matrix .group td{background:#f1f4f8;font-weight:900;text-align:left}.matrix .total td{font-weight:900;background:#f8fafc}.matrix .balance td{font-weight:900;background:#eef8f3}.cellMain{font-weight:800;white-space:nowrap}.cellSub{font-size:9px;color:var(--muted);margin-top:2px;max-width:95px;line-height:1.2}.debtTabs{display:flex;gap:6px;overflow:auto;margin:12px 0}.debtTabs button{white-space:nowrap;border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 11px;font-weight:800}.debtTabs button.active{background:#18212f;color:#fff}.confirmBox{background:var(--greenbg);color:#08764c;padding:13px;border-radius:13px;margin-top:12px;font-weight:700}@media(max-width:600px){.wizardChoices{grid-template-columns:1fr 1fr}.quickGrid{grid-template-columns:repeat(2,1fr)}}
+</style>
+
+<style id="v111-visual-refresh">
+/* V1.11: capa visual únicamente. No altera cálculos ni datos. */
+:root{--graphite:#17202c;--bright-green:#00a86b;--bright-red:#ef3f4d;--bright-blue:#1769e0;--soft-blue:#dfeeff}
+body{background:#f3f6fa}
+.card{border:1px solid #edf0f4;box-shadow:0 8px 28px rgba(24,33,47,.075)}
+/* Registrar: más identidad sin cambiar el wizard */
+#registrar .wizardChoices .wizardChoice{box-shadow:0 4px 14px rgba(24,33,47,.045);transition:.16s}
+#registrar .wizardChoices .wizardChoice:hover,#registrar .quickBtn:hover{transform:translateY(-1px);box-shadow:0 7px 18px rgba(24,33,47,.08)}
+#registrar .wizardChoices .wizardChoice:nth-child(4n+1){border-color:#bcebd4;background:linear-gradient(145deg,#fff,#effbf5)}
+#registrar .wizardChoices .wizardChoice:nth-child(4n+2){border-color:#ffd0d4;background:linear-gradient(145deg,#fff,#fff1f2)}
+#registrar .wizardChoices .wizardChoice:nth-child(4n+3){border-color:#c9ddff;background:linear-gradient(145deg,#fff,#eef5ff)}
+#registrar .wizardChoices .wizardChoice:nth-child(4n+4){border-color:#d9dee7;background:linear-gradient(145deg,#fff,#f3f5f8)}
+/* Tarjetas: identidad de cada entidad */
+#debtCards .debtCard{position:relative;overflow:hidden;border-width:1px;border-style:solid;padding-left:20px}
+#debtCards .debtCard:before{content:"";position:absolute;left:0;top:0;bottom:0;width:7px}
+#debtCards .debtCard:nth-child(1){border-color:#9adfbc;background:linear-gradient(110deg,#effcf5 0,#fff 27%,#fff 100%)}
+#debtCards .debtCard:nth-child(1):before{background:linear-gradient(#00a650,#555b61)}
+#debtCards .debtCard:nth-child(1) h2{color:#008e48}
+#debtCards .debtCard:nth-child(1) .progress i{background:#00a650}
+#debtCards .debtCard:nth-child(1) .badge{background:#e0f7ea;color:#008b47}
+#debtCards .debtCard:nth-child(2){border-color:#9cc8ff;background:linear-gradient(110deg,#eef8ff 0,#fff 27%,#fff 100%)}
+#debtCards .debtCard:nth-child(2):before{background:linear-gradient(#00a86b,#1167d8)}
+#debtCards .debtCard:nth-child(2) h2{color:#1167d8}
+#debtCards .debtCard:nth-child(2) .progress i{background:linear-gradient(90deg,#00a86b,#1167d8)}
+#debtCards .debtCard:nth-child(2) .badge{background:#e5f0ff;color:#1167d8}
+#debtCards .debtCard:nth-child(3){border-color:#ffbe91;background:linear-gradient(110deg,#eef5ff 0,#fff 27%,#fff 100%)}
+#debtCards .debtCard:nth-child(3):before{background:linear-gradient(#0057a8,#ff6b00)}
+#debtCards .debtCard:nth-child(3) h2{color:#0057a8}
+#debtCards .debtCard:nth-child(3) .progress i{background:linear-gradient(90deg,#0057a8,#ff6b00)}
+#debtCards .debtCard:nth-child(3) .badge{background:#fff0e6;color:#d85500}
+/* Tabla Proyectado: líneas más visibles y encabezado de fechas uniforme */
+.matrixScroll{border:1px solid #cbd3de;box-shadow:0 5px 16px rgba(24,33,47,.05);position:relative;max-height:62vh;overflow:auto}
+.matrix th,.matrix td{border-right:1px solid #cfd6df;border-bottom:1px solid #cfd6df}
+.matrix thead th{position:sticky;top:0;z-index:8;background:var(--graphite)!important;color:#fff!important;border-color:#35404e;font-weight:900;box-shadow:0 2px 0 rgba(0,0,0,.18)}
+.matrix thead th .cellSub{color:#cbd5e1!important}
+.matrix th:first-child{position:sticky;top:0;left:0;z-index:12;background:var(--graphite)!important;color:#fff!important}
+.matrix td:first-child{position:sticky;left:0;z-index:5;background:#fff;box-shadow:2px 0 0 #cfd6df}
+.matrix .group td{background:#e7f8ef;font-weight:900;color:#08764c}
+.matrix .group:nth-of-type(n+2) td{background:#ffeded;color:#b4232e}
+.matrix .total td{font-weight:900}
+/* Total ingresos = verde, total egresos = rojo */
+.matrix tbody .total:nth-of-type(6) td{background:#ddf7e9;color:#08764c}
+/* Las dos filas finales tienen identidad propia */
+.matrix tbody tr:nth-last-child(2) td{background:#17202c!important;color:#fff!important;font-weight:900;border-color:#35404e}
+.matrix tbody tr:nth-last-child(2) td:first-child{background:#17202c!important;color:#fff!important}
+.matrix tbody tr:last-child td{background:#dcecff!important;color:#0d4f9e!important;font-weight:950;border-color:#b7d4f6}
+.matrix tbody tr:last-child td:first-child{background:#1769e0!important;color:#fff!important}
+.matrix tbody tr:nth-last-child(2) .pos,.matrix tbody tr:nth-last-child(2) .neg{color:#fff!important}
+.matrix tbody tr:last-child .pos,.matrix tbody tr:last-child .neg{color:#0d4f9e!important}
+/* Barra inferior: color y estado activo claro */
+.nav{gap:5px;padding:7px 7px 10px;border-top:1px solid #d9e0e9;box-shadow:0 -5px 20px rgba(24,33,47,.06)}
+.nav button{border-radius:13px;font-weight:700;transition:.15s}
+.nav button:nth-child(1).active{background:#e5f8ef;color:#078454}
+.nav button:nth-child(2).active{background:#ffebed;color:#d92d3a}
+.nav button:nth-child(3).active{background:#e8f1ff;color:#1769e0}
+.nav button:nth-child(4).active{background:#e1f7ec;color:#008e58}
+.nav button.active b{transform:scale(1.08)}
+/* KPI un poco más vivos */
+.kpi.green{background:linear-gradient(145deg,#ddf9ec,#effcf6);color:#007d4f;border:1px solid #c0efd9}
+.kpi.orange{background:linear-gradient(145deg,#fff0e4,#fff8ef);color:#b75b00;border:1px solid #ffd5ad}
+.kpi.blue{background:linear-gradient(145deg,#e0ecff,#f0f6ff);color:#155ebd;border:1px solid #c7dcff}
+</style>
+
+
+<style id="v112-identity-refresh">
+/* V1.12 — identidad visual aprobada. Proyectado queda intacto. */
+:root{--v12-green:#08a957;--v12-red:#ff3038;--v12-blue:#1268e8;--v12-navy:#10233f;--v12-gray:#738196}
+
+/* INICIO */
+#inicio .kpis{gap:12px}
+#inicio .kpi{position:relative;overflow:hidden;padding:18px 20px;border-width:1px;min-height:142px;box-shadow:0 10px 26px rgba(22,45,80,.08)}
+#inicio .kpi:after{content:'›';position:absolute;right:16px;top:50%;transform:translateY(-50%);display:grid;place-items:center;width:32px;height:32px;border-radius:50%;font-size:25px;font-weight:800}
+#inicio .kpi strong{display:block;margin-top:8px;font-size:30px;line-height:1.05;padding-right:34px}
+#inicio .kpi small{font-size:12px}
+#inicio .kpi.green{background:linear-gradient(135deg,#dff9ec,#f1fff8);border-color:#b8efd4;color:#007d43}
+#inicio .kpi.green:after{background:#c8f2dc;color:#008d4a}
+#inicio .kpi.orange{background:linear-gradient(135deg,#ffe5e7,#fff5f5);border-color:#ffc9cd;color:#d62231}
+#inicio .kpi.orange:after{background:#ffd7da;color:#e62b38}
+#inicio .kpi.blue{background:linear-gradient(135deg,#dceaff,#f0f6ff);border-color:#c4dcff;color:#075bc7}
+#inicio .kpi.blue:after{background:#cfe2ff;color:#0d67dc}
+#inicio .primary{background:linear-gradient(90deg,#132238,#1d2c41);box-shadow:0 8px 18px rgba(16,35,63,.14)}
+#inicio #nextMoves{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+#inicio #nextMoves .row{position:relative;display:block;border:1px solid #dfe6ef;border-radius:14px;padding:12px 34px 12px 14px;background:#fff;min-height:84px;box-shadow:0 3px 10px rgba(22,45,80,.035)}
+#inicio #nextMoves .row:after{content:'›';position:absolute;right:13px;top:50%;transform:translateY(-50%);color:#66809f;font-size:24px}
+#inicio #nextMoves .row>span{display:block}
+#inicio #nextMoves .row .amt{display:block;margin-top:5px;font-size:17px}
+#inicio #nextMoves .row .pos{color:#00994d}
+#inicio #nextMoves .row .neg{color:#ef3038}
+#inicio .secondary{border-color:#d8e2ef;color:#1769d7}
+
+/* REGISTRAR — tarjetas iniciales */
+#registrar #registerCard{padding:18px}
+#registrar .wizardChoices{gap:12px}
+#registrar .wizardChoice{position:relative;text-align:left;padding:18px 18px;min-height:104px;border-radius:16px;font-size:16px;line-height:1.45;box-shadow:0 5px 14px rgba(20,45,80,.045)}
+#registrar .wizardChoice:after{content:'›';position:absolute;right:15px;top:50%;transform:translateY(-50%);display:grid;place-items:center;width:26px;height:26px;border-radius:50%;font-size:20px}
+/* pantalla inicial */
+#registrar .wizardChoice[onclick*="'compra'"]{background:linear-gradient(145deg,#e6faef,#f7fffa);border-color:#bdebd1;color:#087f45}
+#registrar .wizardChoice[onclick*="'compra'"]:after{background:#d0f3df;color:#078d4a}
+#registrar .wizardChoice[onclick*="'ingreso'"]{background:linear-gradient(145deg,#ffe8ea,#fff7f7);border-color:#ffc9ce;color:#d92534}
+#registrar .wizardChoice[onclick*="'ingreso'"]:after{background:#ffd9dc;color:#e62b38}
+#registrar .wizardChoice[onclick*="'pago_tarjeta'"]{background:linear-gradient(145deg,#e2edff,#f5f9ff);border-color:#c6dcff;color:#1264d6}
+#registrar .wizardChoice[onclick*="'pago_tarjeta'"]:after{background:#d5e6ff;color:#1268e8}
+#registrar .wizardChoice[onclick*="'mas'"]{background:linear-gradient(145deg,#edf1f6,#fafbfd);border-color:#d9e0e8;color:#536277}
+#registrar .wizardChoice[onclick*="'mas'"]:after{background:#e5eaf0;color:#607086}
+/* Compra: Yape / efectivo / crédito */
+#registrar .wizardChoice[onclick*="choosePay('Yape')"]{background:linear-gradient(145deg,#f1e7ff,#fbf8ff);border-color:#d9c1ff;color:#7624b8}
+#registrar .wizardChoice[onclick*="choosePay('Yape')"]:after{background:#eadcff;color:#7624b8}
+#registrar .wizardChoice[onclick*="choosePay('Efectivo')"]{background:linear-gradient(145deg,#e4faec,#f8fffa);border-color:#b9eacb;color:#078c43}
+#registrar .wizardChoice[onclick*="choosePay('Efectivo')"]:after{background:#d2f3df;color:#078c43}
+#registrar .wizardChoice[onclick*="choosePay('credito')"]{background:linear-gradient(145deg,#e8eef6,#f8fafc);border-color:#ccd6e3;color:#172b46}
+#registrar .wizardChoice[onclick*="choosePay('credito')"]:after{background:#dfe6ef;color:#172b46}
+#registrar .quickBtn{border-radius:14px;min-height:54px;transition:.15s;border-color:#dbe3ed}
+#registrar .quickBtn:hover{border-color:#9fb9da}
+
+/* DEUDAS — identidad de tarjeta más marcada y formato compacto */
+#deudas .sectionTitle{font-size:14px;color:#657389;margin-bottom:10px}
+#debtCards .debtCard{padding:17px 20px 14px 24px;border-radius:18px;box-shadow:0 8px 22px rgba(19,44,79,.07);min-height:0}
+#debtCards .debtCard:before{width:10px}
+#debtCards .debtHead{margin-bottom:4px}
+#debtCards .debtHead h2{font-size:21px;margin-bottom:4px}
+#debtCards .debtCard .row{display:inline-flex;vertical-align:top;width:49%;border-bottom:0;padding:8px 14px 8px 0;align-items:flex-start;flex-direction:column;gap:3px}
+#debtCards .debtCard .row:nth-of-type(2){border-left:1px solid #e2e8f0;padding-left:18px}
+#debtCards .debtCard .row b{font-size:19px;line-height:1.2}
+#debtCards .debtCard .progress{margin:10px 0 8px;height:7px}
+#debtCards .debtHint:after{content:'  ›';font-size:16px}
+#debtCards .debtCard:nth-child(1){background:linear-gradient(105deg,#e8faef 0,#fff 24%,#fff 100%);border-color:#7edaa9}
+#debtCards .debtCard:nth-child(1):before{background:linear-gradient(180deg,#00ad55 0 72%,#626970 72%)}
+#debtCards .debtCard:nth-child(2){background:linear-gradient(105deg,#eef8ff 0,#fff 24%,#fff 100%);border-color:#7db7ff}
+#debtCards .debtCard:nth-child(2):before{background:linear-gradient(180deg,#00a970 0 28%,#1268e8 28%)}
+#debtCards .debtCard:nth-child(3){background:linear-gradient(105deg,#edf4ff 0,#fff 24%,#fff 100%);border-color:#ffad73}
+#debtCards .debtCard:nth-child(3):before{background:linear-gradient(180deg,#075aa8 0 70%,#ff6b00 70%)}
+#debtCards .debtCard:nth-child(3) h2:after{content:'  ›';color:#ff6b00}
+
+@media(max-width:600px){
+ #inicio #nextMoves{grid-template-columns:1fr 1fr}
+ #inicio .kpi{min-height:128px;padding:16px}
+ #inicio .kpi strong{font-size:25px}
+ #debtCards .debtCard .row{width:100%;display:flex;border-left:0!important;border-bottom:1px solid #e5eaf0;padding:8px 0!important;flex-direction:row;justify-content:space-between;align-items:center}
+ #debtCards .debtCard .row b{font-size:17px}
+}
+
+/* V1.13 · Respaldo local */
+.backupBox{background:linear-gradient(135deg,#eef7ff,#f3fbf7);border:1px solid #dbe9f2;border-radius:18px;padding:18px;text-align:center;margin-bottom:12px}
+.backupIcon{font-size:30px;margin-bottom:6px}.backupBox b{font-size:17px}.backupBox p{margin:7px 0 0;line-height:1.45}
+.backupExport{background:#087f5b!important;box-shadow:0 8px 18px rgba(8,127,91,.18)}
+.backupImport{width:100%;margin-top:9px;border-color:#bfd1e3;background:#edf5ff;color:#174f91}
+.backupNote{margin-top:12px;line-height:1.45;text-align:center}.backupStatus{margin-top:12px;padding:11px 12px;border-radius:12px;font-size:12px;font-weight:750;text-align:center}
+.backupStatus.ok{background:#e8f8ef;color:#08764c}.backupStatus.warning{background:#fff0f0;color:#a92929}
+</style>
+
+</head><body><div class="app">
+<header class="top"><h1>Mis Finanzas</h1><p id="todayLabel"></p></header>
+<section id="inicio" class="page active">
+ <div class="kpis">
+  <button class="kpi green" onclick="showFree()"><small>DINERO LIBRE</small><strong id="freeKpi">S/ 0.00</strong><p id="freeHorizon">Disponible hasta el próximo corte</p></button>
+  <button class="kpi orange" onclick="showCommitments()"><small>DINERO COMPROMETIDO</small><strong id="committedKpi">S/ 0.00</strong><p id="commitHorizon">Toca para ver el detalle</p></button>
+  <button class="kpi blue" onclick="showBalances()"><small>SALDO ACTUAL</small><strong id="balanceKpi">S/ 0.00</strong><p>BCP + efectivo</p></button>
+ </div>
+ <div class="card"><h2>Acceso rápido</h2><button class="primary" onclick="go('registrar')">＋ Registrar movimiento</button></div>
+ <div class="card"><h2>Próximos movimientos</h2><div id="nextMoves"></div><button class="secondary" style="width:100%;margin-top:8px" onclick="go('proyectado')">Ver proyectado</button></div>
+ <div class="card"><h2>Últimos movimientos</h2><div id="recentMoves"></div></div>
+</section>
+<section id="registrar" class="page">
+ <div class="card" id="registerCard"><div id="regWizard"></div></div>
+ <div class="card"><h2>Movimientos registrados</h2><div id="allMoves"></div></div>
+</section>
+<section id="deudas" class="page"><div class="sectionTitle">Tarjetas de crédito</div><div id="debtCards"></div><div class="card"><h2>Compras en cuotas</h2><div id="installments"></div></div></section>
+<section id="proyectado" class="page">
+ <div class="card"><h2>Proyectado</h2><div class="chips" style="margin-bottom:12px"><button class="chip active" id="chronoBtn" onclick="setProjView('chrono')">Cronología</button><button class="chip" id="matrixBtn" onclick="setProjView('matrix')">Tabla por cortes</button></div><div class="chips"><button class="chip" onclick="setProjection('quincena')">Próxima quincena</button><button class="chip" onclick="setProjection('finmes')">Fin de mes</button></div><div class="field"><label>O elige una fecha</label><input type="date" id="projectionDate" onchange="renderProjection()"></div><div class="projectionTotal"><small>DINERO LIBRE PROYECTADO</small><strong id="projectedFree">S/ 0.00</strong><div class="tiny" id="projectedCaption"></div></div><div id="projectionRows"></div><div id="matrixWrap" style="display:none"></div></div>
+ <div class="card"><h2>¿Puedo gastar esto?</h2><div class="field"><label>Monto a simular</label><input id="simAmount" type="number" inputmode="decimal" step="0.01" placeholder="S/ 0.00"></div><div class="field"><label>Fecha de compra</label><input id="simDate" type="date"></div><div class="field"><label>¿Cómo pagarías?</label><select id="simMethod"><option>Yape</option><option>Efectivo</option><option>BCP Crédito</option><option>CMR</option><option>Interbank Crédito</option></select></div><button class="primary" onclick="simulate()">Simular</button><button class="secondary" id="clearSimBtn" style="display:none;width:100%;margin-top:8px" onclick="clearSimulation()">Quitar simulación</button><div id="simResult"></div></div>
+</section>
+<nav class="nav"><button class="active" data-page="inicio" onclick="go('inicio')"><b>⌂</b>Inicio</button><button data-page="registrar" onclick="go('registrar')"><b>＋</b>Registrar</button><button data-page="deudas" onclick="go('deudas')"><b>▣</b>Deudas</button><button data-page="proyectado" onclick="go('proyectado')"><b>⌁</b>Proyectado</button></nav>
+</div>
+<div class="modal" id="modal"><div class="sheet"><button class="close" onclick="closeModal()">×</button><h2 id="modalTitle"></h2><div id="modalBody"></div></div></div>
+<script>
+const START='2026-09-26';
+const initial={accounts:{'BCP Ahorros':4.46,'Efectivo':36.80},cards:{
+ 'CMR':{limit:6800,debt:1945.80,close:19,due:15,nextPay:1025.82,nextDate:'2026-10-15'},
+ 'Interbank Crédito':{limit:4200,debt:256.42,close:26,due:20,nextPay:211.23,nextDate:'2026-10-20',usd:12.27},
+ 'BCP Crédito':{limit:6900,debt:2726.46,close:25,due:20,nextPay:328.56,nextDate:'2026-10-20'}},
+ installments:[{card:'BCP Crédito',name:'Colchón',monthly:124.62,total:12,nextNo:2,nextDate:'2026-10-20'},{card:'BCP Crédito',name:'Celular Nicole',monthly:196.62,total:12,nextNo:2,nextDate:'2026-10-20'},{card:'CMR',name:'Celular Alejandra',monthly:119.90,total:12,nextNo:6,nextDate:'2026-10-15'}],
+ commitments:[
+  {name:'Pasajes reservados',amount:15,date:'2026-09-30',kind:'Fijo'},
+  {name:'Internet móvil',amount:29.95,date:'2026-10-03',kind:'Fijo'},
+  {name:'CMR - próximo pago',amount:1025.82,date:'2026-10-15',kind:'Tarjeta'},
+  {name:'Interbank - próximo pago (S/)',amount:211.23,date:'2026-10-20',kind:'Tarjeta'},
+  {name:'BCP - próximo pago',amount:328.56,date:'2026-10-20',kind:'Tarjeta'},
+  {name:'Diplomado',amount:609.10,date:'2026-10-31',kind:'Fijo'},
+  {name:'Spotify',amount:6.18,date:'2026-09-30',kind:'Fijo'},
+  {name:'ChatGPT · US$12.27 · TC 3.75',amount:46.0125,date:'2026-10-20',kind:'Fijo USD'},
+  {name:'CMR - pago ciclo siguiente',amount:297.77,date:'2026-11-15',kind:'Tarjeta'}],
+ forecast:[
+  {name:'Sueldo fin de mes',amount:1000,date:'2026-09-30',type:'in'},
+  {name:'Descuento adelanto BCP + comisión',amount:750,date:'2026-09-30',type:'out'},
+  {name:'Nikol',amount:100,date:'2026-10-01',type:'in'},
+  {name:'Sueldo quincena',amount:1000,date:'2026-10-15',type:'in'},
+  {name:'Nicole - celular',amount:137,date:'2026-10-15',type:'in'},
+  {name:'Sueldo fin de mes',amount:1000,date:'2026-10-31',type:'in'},
+  {name:'Sueldo quincena',amount:1000,date:'2026-11-15',type:'in'},
+  {name:'Nicole - celular',amount:137,date:'2026-11-15',type:'in'},
+  {name:'CTS',amount:1000,date:'2026-11-15',type:'in'},
+  {name:'Sueldo fin de mes',amount:1000,date:'2026-11-30',type:'in'},
+  {name:'Sueldo quincena',amount:1000,date:'2026-12-15',type:'in'},
+  {name:'Nicole - celular',amount:137,date:'2026-12-15',type:'in'},
+  {name:'Gratificación',amount:2400,date:'2026-12-15',type:'in'},
+  {name:'Sueldo fin de mes',amount:1000,date:'2026-12-31',type:'in'}]};
+let data=JSON.parse(localStorage.getItem('finanzasDahaneV1')||'null')||{...initial,movements:[]};
+if(!data.movements)data.movements=[];
+// Migración V1.1: agrega compromisos nuevos aunque el navegador ya tenga datos guardados de la V1.
+if(!data.commitments.some(x=>x.name==='CMR - pago ciclo siguiente'&&x.date==='2026-11-15'))data.commitments.push({name:'CMR - pago ciclo siguiente',amount:297.77,date:'2026-11-15',kind:'Tarjeta'});
+if(!data.commitments.some(x=>x.name==='Spotify'&&x.date==='2026-09-30'))data.commitments.push({name:'Spotify',amount:6.18,date:'2026-09-30',kind:'Fijo'});
+if(!data.commitments.some(x=>x.name.startsWith('ChatGPT')&&x.date==='2026-10-20'))data.commitments.push({name:'ChatGPT · US$12.27 · TC 3.75',amount:46.0125,date:'2026-10-20',kind:'Fijo USD'});
+data.installments=initial.installments;
+let editId=null;let moveType='compra',method='Yape',creditMode='directo';
+const fmt=n=>'S/ '+Number(n||0).toLocaleString('es-PE',{minimumFractionDigits:2,maximumFractionDigits:2});
+const dmy=s=>{let [y,m,d]=s.split('-');return `${d}/${m}/${y}`};
+const today=()=>{const n=new Date();return [n.getFullYear(),String(n.getMonth()+1).padStart(2,'0'),String(n.getDate()).padStart(2,'0')].join('-')};
+function addMonthsISO(dateStr,months,day){let [y,m]=dateStr.split('-').map(Number);let d=new Date(y,m-1+months,day);return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-')}
+function recurringExpenseItems(until){let out=[];let end=new Date(until+'T12:00:00');
+// Internet móvil: S/29.95 cada día 3, desde octubre 2026
+for(let d=new Date('2026-11-03T12:00:00');d<=end;d=new Date(d.getFullYear(),d.getMonth()+1,3)){let dt=[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),'03'].join('-');out.push({name:'Internet móvil',amount:29.95,date:dt,type:'out',recurring:true});}
+// Spotify: S/6.18 el último día de cada mes. Septiembre está cargado como compromiso inicial.
+for(let d=new Date('2026-10-31T12:00:00');d<=end;d=new Date(d.getFullYear(),d.getMonth()+2,0)){let dt=[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');out.push({name:'Spotify',amount:6.18,date:dt,type:'out',recurring:true});}
+// UPC: S/609.10 a fin de mes por 9 meses, desde 31/10/2026. Octubre está cargado como compromiso inicial.
+for(let i=1;i<9;i++){let d=new Date(2026,10+i,0);let dt=[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');if(dt<=until)out.push({name:'Diplomado UPC',amount:609.10,date:dt,type:'out',recurring:true});}
+// ChatGPT: US$12.27 mensual en Interbank, TC referencial fijo S/3.75 = S/46.01. Octubre está cargado como compromiso inicial.
+for(let d=new Date('2026-11-20T12:00:00');d<=end;d=new Date(d.getFullYear(),d.getMonth()+1,20)){let dt=[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),'20'].join('-');out.push({name:'ChatGPT · US$12.27 · TC 3.75',amount:46.0125,date:dt,type:'out',recurring:true,usd:12.27});}
+return out}
+function recurringIncomeItems(until){let out=[];let d=new Date('2026-10-10T12:00:00'),end=new Date(until+'T12:00:00');while(d<=end){let dt=[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),'10'].join('-');if(dt>=START)out.push({name:'Bono',amount:200,date:dt,type:'in',recurring:true});d=new Date(d.getFullYear(),d.getMonth()+1,10)}return out}
+function knownInstallmentItems(until){let out=[];for(const x of data.installments){for(let no=x.nextNo+1;no<=x.total;no++){let dt=addMonthsISO(x.nextDate,no-x.nextNo,Number(x.nextDate.slice(-2)));if(dt>until)break;let card=x.card.replace(' Crédito','');let knownTotal=data.commitments.some(c=>c.date===dt&&c.kind==='Tarjeta'&&c.name.startsWith(card+' -'));if(knownTotal)continue;out.push({name:`${card} · ${x.name} · Cuota ${no}/${x.total}`,amount:x.monthly,date:dt,type:'out',installment:true});}}return out}
+function movementCreditItems(until){let out=[];for(const m of data.movements){if(m.type!=='compra'||!data.cards[m.method])continue;if(m.creditMode==='cuotas'&&m.installmentCount>1){let first=nextDueForCard(m.method,m.date),q=Number(m.installmentAmount||m.amount/m.installmentCount);for(let no=1;no<=m.installmentCount;no++){let dt=addMonthsISO(first,no-1,Number(first.slice(-2)));if(dt<=until)out.push({name:`${m.desc||m.category} · ${m.method.replace(' Crédito','')} · Cuota ${no}/${m.installmentCount}`,amount:q,date:dt,type:'out',real:true});}}else{let dt=nextDueForCard(m.method,m.date);if(dt<=until)out.push({name:`${m.desc||m.category} · ${m.method.replace(' Crédito','')} · compra directa`,amount:m.amount,date:dt,type:'out',real:true});}}return out}
+function persist(){localStorage.setItem('finanzasDahaneV1',JSON.stringify(data))}
+function accountBalances(){let a={...data.accounts};for(const m of data.movements){if(m.type==='compra'&&(m.method==='Yape'||m.method==='BCP Ahorros'))a['BCP Ahorros']-=m.amount;else if(m.type==='compra'&&m.method==='Efectivo')a.Efectivo-=m.amount;else if(m.type==='ingreso')a[m.account]=(a[m.account]||0)+m.amount;else if(m.type==='pago_tarjeta')a[m.from]=(a[m.from]||0)-m.amount;else if(m.type==='transferencia'){a[m.from]-=m.amount;a[m.to]=(a[m.to]||0)+m.amount}}return a}
+function cardState(){let c=JSON.parse(JSON.stringify(data.cards));for(const m of data.movements){if(m.type==='compra'&&c[m.method])c[m.method].debt+=m.amount;if(m.type==='pago_tarjeta'&&c[m.card])c[m.card].debt-=m.amount}return c}
+function currentBalance(){return Object.values(accountBalances()).reduce((a,b)=>a+b,0)}
+function commitmentHorizon(base=today()){let [y,m,d]=base.split('-').map(Number);let end;if(d<=15){end=new Date(y,m-1,15)}else{end=new Date(y,m,0)}return [end.getFullYear(),String(end.getMonth()+1).padStart(2,'0'),String(end.getDate()).padStart(2,'0')].join('-')}
+function activeCommitments(){let h=commitmentHorizon();return [...data.commitments.filter(x=>x.date>=today()&&x.date<=h),...knownInstallmentItems(h).filter(x=>x.date>=today()),...movementCreditItems(h).filter(x=>x.date>=today())]}
+function committed(){return activeCommitments().reduce((a,b)=>a+b.amount,0)}
+function free(){return currentBalance()-committed()}
+function go(id){document.querySelectorAll('.page').forEach(x=>x.classList.toggle('active',x.id===id));document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===id));renderAll();scrollTo(0,0)}
+function openModal(t,html){modalTitle.textContent=t;modalBody.innerHTML=html;modal.classList.add('open')}function closeModal(){modal.classList.remove('open')}
+function showBalances(){let a=accountBalances();openModal('Saldo actual',Object.entries(a).map(([k,v])=>`<div class=row><span>${k}<div class=sub>${k==='BCP Ahorros'?'Yape descuenta de esta cuenta':''}</div></span><b>${fmt(v)}</b></div>`).join(''))}
+function showCommitments(){openModal(`Dinero comprometido · hasta ${dmy(commitmentHorizon())}`,activeCommitments().sort((a,b)=>a.date.localeCompare(b.date)).map(x=>`<div class=row><span>${x.name}<div class=sub>${dmy(x.date)} · ${x.kind}</div></span><b>${fmt(x.amount)}</b></div>`).join('')+`<div class=row><b>Total</b><b>${fmt(committed())}</b></div>`)}
+function showFree(){openModal(`Dinero libre · hasta ${dmy(commitmentHorizon())}`,`<div class=row><span>Saldo actual</span><b>${fmt(currentBalance())}</b></div><div class=row><span>Menos compromisos conocidos</span><b class=neg>− ${fmt(committed())}</b></div><div class=row><b>Dinero libre</b><b class="${free()<0?'neg':'pos'}">${fmt(free())}</b></div><p class=tiny>Si sale negativo, significa que tu saldo de hoy todavía no cubre todos los compromisos cargados. El Proyectado incorpora los ingresos futuros.</p>`)}
+function renderHome(){balanceKpi.textContent=fmt(currentBalance());committedKpi.textContent=fmt(committed());freeKpi.textContent=fmt(free());let h=commitmentHorizon();commitHorizon.textContent=`Hasta ${dmy(h)} · toca para ver detalle`;freeHorizon.textContent=`Disponible libre hasta ${dmy(h)}`;let homeUntil=addMonthsISO(today(),3,Number(today().slice(-2)));let all=[...data.forecast.filter(x=>x.name!=='Bono').map(x=>({...x,source:'forecast'})),...recurringIncomeItems(homeUntil),...recurringExpenseItems(homeUntil),...data.commitments.map(x=>({name:x.name,amount:x.amount,date:x.date,type:'out'}))].filter(x=>x.date>=START).sort((a,b)=>a.date.localeCompare(b.date)).slice(0,6);nextMoves.innerHTML=all.map(x=>`<div class=row><span><b>${dmy(x.date).slice(0,5)}</b> ${x.name}</span><span class="amt ${x.type==='in'?'pos':'neg'}">${x.type==='in'?'+':'−'}${fmt(x.amount)}</span></div>`).join('');let r=[...data.movements].sort((a,b)=>(b.date+b.id).localeCompare(a.date+a.id)).slice(0,5);recentMoves.innerHTML=r.length?r.map(moveRow).join(''):'<div class=empty>Aún no registraste movimientos.</div>'}
+function moveRow(m){let name=m.type==='compra'?(m.desc||m.category):m.type==='ingreso'?(m.desc||'Ingreso'):m.type==='pago_tarjeta'?`Pago ${m.card}`:`${m.from} → ${m.to}`;let meta=m.type==='compra'?m.method:m.type==='ingreso'?m.account:m.type==='pago_tarjeta'?m.from:'Transferencia';return `<div class=row><span><b>${name}</b><div class=sub>${dmy(m.date)} · ${meta}</div></span><span><span class="amt ${m.type==='ingreso'?'pos':'neg'}">${m.type==='ingreso'?'+':'−'}${fmt(m.amount)}</span><div class=editBtns><button class=mini onclick="editMove('${m.id}')">Editar</button><button class="mini danger" onclick="deleteMove('${m.id}')">×</button></div></span></div>`}
+let regState={type:null,step:0,pay:null,card:null,mode:null};
+function setupChips(){renderRegisterStart()}
+function renderRegisterStart(){regState={type:null,step:0,pay:null,card:null,mode:null};regWizard.innerHTML=`<h2>Registrar</h2><div class="wizardChoices"><button class="wizardChoice" onclick="chooseRegType('compra')">🛍️<br>Compra</button><button class="wizardChoice" onclick="chooseRegType('ingreso')">💰<br>Ingreso</button><button class="wizardChoice" onclick="chooseRegType('pago_tarjeta')">💳<br>Pagar tarjeta</button><button class="wizardChoice" onclick="chooseRegType('mas')">＋<br>Más</button></div>`}
+function regHead(title){return `<div class="wizardHead"><button class="wizardBack" onclick="renderRegisterStart()">← Atrás</button><h2>${title}</h2></div>`}
+function chooseRegType(t){regState.type=t;if(t==='compra')renderCompraPay();else if(t==='ingreso')renderIngreso();else if(t==='pago_tarjeta')renderPago();else renderMas()}
+function renderCompraPay(){regWizard.innerHTML=regHead('Compra')+`<div class=sub style="margin-bottom:9px">¿Con qué pagaste?</div><div class="wizardChoices"><button class="wizardChoice" onclick="choosePay('Yape')">📱<br>Yape</button><button class="wizardChoice" onclick="choosePay('Efectivo')">💵<br>Efectivo</button><button class="wizardChoice" onclick="choosePay('credito')">💳<br>Crédito</button></div>`}
+function choosePay(p){regState.pay=p;if(p==='credito')renderCardChoice();else renderCompraFinal()}
+function renderCardChoice(){regWizard.innerHTML=regHead('Compra · Crédito')+`<div class=sub style="margin-bottom:9px">¿Qué tarjeta?</div><div class="quickGrid"><button class="quickBtn" onclick="chooseCard('BCP Crédito')">BCP</button><button class="quickBtn" onclick="chooseCard('CMR')">CMR</button><button class="quickBtn" onclick="chooseCard('Interbank Crédito')">Interbank</button></div>`}
+function chooseCard(c){regState.card=c;regWizard.innerHTML=regHead('Compra · '+c.replace(' Crédito',''))+`<div class=sub style="margin-bottom:9px">¿Cómo compraste?</div><div class="wizardChoices"><button class="wizardChoice" onclick="chooseCreditMode('directo')">Directo</button><button class="wizardChoice" onclick="chooseCreditMode('cuotas')">En cuotas</button></div>`}
+function chooseCreditMode(m){regState.mode=m;renderCompraFinal()}
+function categoryButtons(){return `<div class="quickGrid" id="catBtns">${['Comida','Transporte','Salidas','Compras','Estudios','Merlina','Otros'].map((x,i)=>`<button class="quickBtn ${i===0?'active':''}" data-cat="${x}" onclick="pickCat(this)">${x}</button>`).join('')}</div>`}
+function pickCat(b){document.querySelectorAll('#catBtns button').forEach(x=>x.classList.remove('active'));b.classList.add('active')}
+function renderCompraFinal(){let cuotas=regState.mode==='cuotas'?`<div class=field><label>Número de cuotas</label><input id="wCount" type=number min=2 placeholder="Ej. 12"></div><div class=field><label>Monto real de cada cuota</label><input id="wInstallment" type=number step=.01 placeholder="S/ 0.00"></div><div class=tiny>Usaremos el monto real de la cuota para proyectar. No dividiremos el precio automáticamente.</div>`:'';regWizard.innerHTML=regHead('Compra')+`<div class=field><label>Precio de la compra</label><input id="wAmount" class=moneyInput type=number step=.01 placeholder="S/ 0.00"></div>${cuotas}<div class=field><label>Categoría</label>${categoryButtons()}</div><div class=field><label>Fecha</label><input id="wDate" type=date value="${today()}"></div><div class=field><label>Descripción (opcional)</label><input id="wDesc" placeholder="Ej. almuerzo"></div><button class=primary onclick="saveWizardCompra()">Guardar compra</button>`}
+function saveWizardCompra(){
+ let amount=Number(wAmount.value),date=wDate.value,desc=wDesc.value.trim(),cat=document.querySelector('#catBtns .active')?.dataset.cat||'Otros';
+ if(!amount||amount<=0||!date)return alert('Ingresa un monto válido y la fecha.');
+ let balances=accountBalances(),cards=cardState();
+ if(regState.pay==='Yape'&&amount>balances['BCP Ahorros']+.001)return alert(`Saldo insuficiente. Tienes ${fmt(balances['BCP Ahorros'])} disponibles en BCP/Yape.`);
+ if(regState.pay==='Efectivo'&&amount>balances.Efectivo+.001)return alert(`Saldo insuficiente. Tienes ${fmt(balances.Efectivo)} disponibles en efectivo.`);
+ if(regState.pay==='credito'){
+   let available=cards[regState.card].limit-cards[regState.card].debt;
+   if(amount>available+.001)return alert(`Línea insuficiente. Tienes ${fmt(available)} disponibles en ${regState.card.replace(' Crédito','')}.`);
+ }
+ let m={id:Date.now().toString(),type:'compra',amount,date,desc,category:cat,method:regState.pay==='credito'?regState.card:regState.pay};
+ if(regState.pay==='credito'){
+   m.creditMode=regState.mode||'directo';
+   if(m.creditMode==='cuotas'){
+     m.installmentCount=Number(wCount.value);m.installmentAmount=Number(wInstallment.value);
+     if(m.installmentCount<2||!m.installmentAmount||m.installmentAmount<=0)return alert('Indica número de cuotas y monto real de cada cuota.');
+   }
+ }
+ data.movements.push(m);persist();renderAll();regWizard.innerHTML=regHead('Compra guardada')+`<div class=confirmBox>✓ Movimiento guardado correctamente.</div><button class=secondary style="width:100%;margin-top:10px" onclick="undoLast('${m.id}')">Deshacer</button><button class=primary style="margin-top:10px" onclick="renderRegisterStart()">Registrar otro</button>`
+}
+function renderIngreso(){regWizard.innerHTML=regHead('Ingreso')+`<div class=field><label>Monto</label><input id=wAmount class=moneyInput type=number step=.01 placeholder="S/ 0.00"></div><div class=field><label>¿Dónde lo recibiste?</label><select id=wAccount><option>BCP Ahorros</option><option>Efectivo</option></select></div><div class=field><label>Concepto</label><input id=wDesc placeholder="Ej. devolución"></div><div class=field><label>Fecha</label><input id=wDate type=date value="${today()}"></div><button class=primary onclick="saveSimple('ingreso')">Guardar ingreso</button>`}
+function renderPago(){regWizard.innerHTML=regHead('Pagar tarjeta')+`<div class=field><label>Monto</label><input id=wAmount class=moneyInput type=number step=.01 placeholder="S/ 0.00"></div><div class=field><label>Tarjeta</label><select id=wCard><option>CMR</option><option>BCP Crédito</option><option>Interbank Crédito</option></select></div><div class=field><label>Sale de</label><select id=wAccount><option>BCP Ahorros</option><option>Efectivo</option></select></div><div class=field><label>Fecha</label><input id=wDate type=date value="${today()}"></div><button class=primary onclick="saveSimple('pago_tarjeta')">Guardar pago</button>`}
+function renderMas(){regWizard.innerHTML=regHead('Más')+`<div class="wizardChoices"><button class="wizardChoice" onclick="renderTransfer()">🔄<br>Transferir dinero</button><button class="wizardChoice" onclick="renderBackup()">🛡️<br>Respaldo</button><button class="wizardChoice" onclick="renderAdjust()">⚙️<br>Corregir saldo</button></div>`}
+function renderBackup(){regWizard.innerHTML=regHead('Respaldo')+`<div class="backupBox"><div class="backupIcon">🛡️</div><b>Protege tus movimientos</b><p class="sub">Exporta una copia de todos tus saldos, tarjetas, cuotas y movimientos. Podrás importarla en otra versión o dispositivo.</p></div><button class="primary backupExport" onclick="exportBackup()">⬇ Exportar mis datos</button><button class="secondary backupImport" onclick="document.getElementById('backupFile').click()">⬆ Importar respaldo</button><input id="backupFile" type="file" accept="application/json,.json" style="display:none" onchange="importBackup(this)"><div class="tiny backupNote">El respaldo se guarda como archivo .json. Importar reemplaza los datos actuales solo después de tu confirmación.</div>`}
+function exportBackup(){
+ const payload={app:'Finanzas Dahane',version:'1.14',exportedAt:new Date().toISOString(),storageKey:'finanzasDahaneV1',data:data};
+ const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+ const url=URL.createObjectURL(blob),a=document.createElement('a');
+ const stamp=new Date().toISOString().slice(0,10).replaceAll('-','');
+ a.href=url;a.download=`Finanzas_Dahane_Respaldo_${stamp}.json`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+ showBackupMessage('✓ Respaldo exportado. Guárdalo en un lugar seguro.','ok');
+}
+function showBackupMessage(msg,kind){let old=document.getElementById('backupMsg');if(old)old.remove();let d=document.createElement('div');d.id='backupMsg';d.className='backupStatus '+kind;d.textContent=msg;regWizard.appendChild(d)}
+function importBackup(input){
+ const file=input.files&&input.files[0];if(!file)return;
+ const reader=new FileReader();
+ reader.onload=()=>{try{
+   const parsed=JSON.parse(reader.result),incoming=parsed&&parsed.data?parsed.data:parsed;
+   if(!incoming||typeof incoming!=='object'||!incoming.accounts||!incoming.cards||!Array.isArray(incoming.movements))throw new Error('Formato inválido');
+   if(!confirm('¿Importar este respaldo? Los datos actuales de la app serán reemplazados por los del archivo seleccionado.')){input.value='';return;}
+   data=incoming;persist();renderAll();renderBackup();showBackupMessage('✓ Respaldo importado correctamente.','ok');
+ }catch(e){showBackupMessage('No pude importar ese archivo. Selecciona un respaldo válido de Finanzas Dahane.','warning');}finally{input.value='';}};
+ reader.onerror=()=>showBackupMessage('No pude leer el archivo seleccionado.','warning');
+ reader.readAsText(file);
+}
+function renderTransfer(){regWizard.innerHTML=regHead('Transferir dinero')+`<div class=field><label>Monto</label><input id=wAmount class=moneyInput type=number step=.01></div><div class=field><label>Origen</label><select id=wFrom><option>BCP Ahorros</option><option>Efectivo</option></select></div><div class=field><label>Destino</label><select id=wTo><option>Efectivo</option><option>BCP Ahorros</option></select></div><div class=field><label>Fecha</label><input id=wDate type=date value="${today()}"></div><button class=primary onclick="saveSimple('transferencia')">Guardar transferencia</button>`}
+function renderAdjust(){let a=accountBalances();regWizard.innerHTML=regHead('Corregir saldo')+`<p class=sub>Úsalo solo si el saldo del sistema no coincide con tu saldo real.</p><div class=field><label>Cuenta</label><select id=wAccount><option>BCP Ahorros</option><option>Efectivo</option></select></div><div class=field><label>Saldo real actual</label><input id=wAmount class=moneyInput type=number step=.01></div><div class=field><label>Motivo</label><input id=wDesc placeholder="Ej. movimiento olvidado"></div><button class=primary onclick="saveAdjustment()">Corregir saldo</button>`}
+function saveSimple(t){
+ let amount=Number(wAmount.value),date=wDate.value;if(!amount||amount<=0||!date)return alert('Completa un monto válido y la fecha.');
+ let m={id:Date.now().toString(),type:t,amount,date,desc:(window.wDesc?.value||'').trim()};
+ if(t==='ingreso')m.account=wAccount.value;
+ if(t==='pago_tarjeta'){
+   m.card=wCard.value;m.from=wAccount.value;
+   let balances=accountBalances(),available=balances[m.from]||0,card=cardState()[m.card];
+   if(amount>available+.001)return alert(`Saldo insuficiente. Tienes ${fmt(available)} disponibles en ${m.from}.`);
+   if(amount>card.debt+.001)return alert(`El pago supera la deuda actual de ${m.card.replace(' Crédito','')}, que es ${fmt(card.debt)}.`);
+ }
+ if(t==='transferencia'){
+   m.from=wFrom.value;m.to=wTo.value;if(m.from===m.to)return alert('Origen y destino deben ser distintos.');
+   let available=accountBalances()[m.from]||0;
+   if(amount>available+.001)return alert(`Saldo insuficiente. Tienes ${fmt(available)} disponibles en ${m.from}.`);
+ }
+ data.movements.push(m);persist();renderAll();renderRegisterStart()
+}
+function saveAdjustment(){let acct=wAccount.value,target=Number(wAmount.value),current=accountBalances()[acct];if(!Number.isFinite(target)||target<0)return alert('Indica un saldo real válido (0 o mayor).');let diff=target-current;if(Math.abs(diff)<.005)return alert('El saldo ya coincide.');data.movements.push({id:Date.now().toString(),type:'ingreso',amount:Math.abs(diff),date:today(),desc:'Ajuste de saldo · '+(wDesc.value||'reconciliación'),account:acct,adjustment:true,sign:diff>0?1:-1});if(diff<0){let m=data.movements[data.movements.length-1];m.type='compra';m.method=acct==='BCP Ahorros'?'Yape':'Efectivo';m.category='Otros'}persist();renderAll();renderRegisterStart()}
+function undoLast(id){data.movements=data.movements.filter(x=>x.id!==id);persist();renderAll();renderRegisterStart()}
+function saveMovement(){}
+function editMove(id){alert('Para mantener el registro consistente, elimina el movimiento y vuelve a registrarlo.');}
+function deleteMove(id){if(confirm('¿Eliminar este movimiento?')){data.movements=data.movements.filter(x=>x.id!==id);persist();renderAll()}}
+function resetForm(){renderRegisterStart()}
+function renderMoves(){let r=[...data.movements].sort((a,b)=>(b.date+b.id).localeCompare(a.date+a.id));allMoves.innerHTML=r.length?r.map(moveRow).join(''):'<div class=empty>Aquí aparecerán tus movimientos.</div>'}
+function renderDebts(){let c=cardState();debtCards.innerHTML=Object.entries(c).map(([name,x])=>`<div class="card debtCard" onclick="openDebtDetail('${name}')"><div class=debtHead><div><h2>${name.replace(' Crédito','')}</h2><div class=sub>Cierra día ${x.close} · paga día ${x.due}</div></div><span class=badge>${Math.round(x.debt/x.limit*100)}% usado</span></div><div class=row><span>Deuda total</span><b>${fmt(x.debt)}</b></div><div class=row><span>Próximo pago<div class=sub>${dmy(x.nextDate)}</div></span><b>${fmt(x.nextPay)}${x.usd?` + US$ ${x.usd.toFixed(2)}`:''}</b></div><div class=progress><i style="width:${Math.min(100,x.debt/x.limit*100)}%"></i></div><div class=tiny>Línea ${fmt(x.limit)} · disponible aprox. ${fmt(x.limit-x.debt)}</div><div class=debtHint>Toca para ver compras y cuotas →</div></div>`).join('');installments.innerHTML=data.installments.map(x=>`<div class=row><span><b>${x.name}</b><div class=sub>${x.card.replace(' Crédito','')} · próxima cuota ${x.nextNo}/${x.total} · ${dmy(x.nextDate)}</div></span><b>${fmt(x.monthly)}/mes</b></div>`).join('')}
+function openDebtDetail(name){let c=cardState()[name],known=data.installments.filter(x=>x.card===name),mov=data.movements.filter(m=>m.type==='compra'&&m.method===name).sort((a,b)=>b.date.localeCompare(a.date));let rows=`<div class=row><span>Deuda total</span><b>${fmt(c.debt)}</b></div><div class=row><span>Próximo pago<div class=sub>${dmy(c.nextDate)}</div></span><b>${fmt(c.nextPay)}${c.usd?` + US$ ${c.usd.toFixed(2)}`:''}</b></div>`;rows+=known.map(x=>`<div class=row><span><b>${x.name}</b><div class=sub>Cuota ${x.nextNo}/${x.total} · ${dmy(x.nextDate)}</div></span><b>${fmt(x.monthly)}</b></div>`).join('');if(name==='Interbank Crédito')rows+=`<div class=row><span><b>ChatGPT</b><div class=sub>US$12.27 · TC 3.75</div></span><b>≈ ${fmt(46.0125)}</b></div>`;rows+=mov.map(m=>`<div class=row><span><b>${m.desc||m.category}</b><div class=sub>${dmy(m.date)} · ${m.creditMode==='cuotas'?`${m.installmentCount} cuotas de ${fmt(m.installmentAmount||m.amount/m.installmentCount)}`:'Compra directa'}</div></span><b>${fmt(m.amount)}</b></div>`).join('');if(!known.length&&!mov.length&&name!=='Interbank Crédito')rows+='<div class=empty>No hay compras detalladas adicionales registradas.</div>';openModal(name.replace(' Crédito','')+' · detalle',rows)}
+function projectionItems(until){let items=[];data.forecast.filter(x=>x.name!=='Bono'&&x.date>=START&&x.date<=until).forEach(x=>items.push({...x}));recurringIncomeItems(until).forEach(x=>items.push(x));recurringExpenseItems(until).forEach(x=>items.push(x));data.commitments.filter(x=>x.date>=START&&x.date<=until).forEach(x=>items.push({name:x.name,amount:x.amount,date:x.date,type:'out'}));knownInstallmentItems(until).forEach(x=>items.push(x));movementCreditItems(until).forEach(x=>items.push(x));for(const m of data.movements.filter(x=>x.date>=START&&x.date<=until)){if(m.type==='ingreso')items.push({name:m.desc||'Ingreso registrado',amount:m.amount,date:m.date,type:'in',real:true});if(m.type==='compra'&&(m.method==='Yape'||m.method==='Efectivo'))items.push({name:m.desc||m.category,amount:m.amount,date:m.date,type:'out',real:true});if(m.type==='pago_tarjeta')items.push({name:`Pago ${m.card}`,amount:m.amount,date:m.date,type:'out',real:true})}return items.sort((a,b)=>a.date.localeCompare(b.date))}
+function projectionValue(until,extra){let bal=Object.values(data.accounts).reduce((a,b)=>a+b,0),items=projectionItems(until);for(const x of items)bal+=x.type==='in'?x.amount:-x.amount;if(extra)bal-=extra;return {bal,items}}
+function setProjection(kind){let base=new Date('2026-09-26T12:00:00'),y=base.getFullYear(),m=base.getMonth(),day=base.getDate(),d;if(kind==='quincena'){if(day<15)d=new Date(y,m,15);else d=new Date(y,m+1,15)}else d=new Date(y,m+1,0);projectionDate.value=[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');renderProjection()}
+let projView='chrono',simulation=null;
+function setProjView(v){projView=v;chronoBtn.classList.toggle('active',v==='chrono');matrixBtn.classList.toggle('active',v==='matrix');projectionRows.style.display=v==='chrono'?'block':'none';matrixWrap.style.display=v==='matrix'?'block':'none';renderProjection()}
+function renderProjection(){let u=projectionDate.value||'2026-12-31';let {bal,items}=projectionValue(u);if(simulation&&simulation.impactDate<=u)bal-=simulation.amount;projectedFree.textContent=fmt(bal);projectedFree.className=bal<0?'neg':'pos';projectedCaption.textContent=`al ${dmy(u)}${simulation?' · incluye simulación':''}`;projectionRows.innerHTML=items.concat(simulation&&simulation.impactDate<=u?[{name:'SIMULACIÓN · '+simulation.method,amount:simulation.amount,date:simulation.impactDate,type:'out',sim:true}]:[]).sort((a,b)=>a.date.localeCompare(b.date)).map(x=>`<div class=row><span>${dmy(x.date).slice(0,5)} · ${x.name}${x.real?'<div class=sub>Movimiento real</div>':''}${x.sim?'<div class=sub>Temporal · no modifica tus datos</div>':''}</span><b class="${x.type==='in'?'pos':'neg'}">${x.type==='in'?'+':'−'}${fmt(x.amount)}</b></div>`).join('')||'<div class=empty>Sin movimientos previstos.</div>';renderMatrix(u)}
+function cutDates(until){let out=[],d=new Date('2026-09-30T12:00:00'),end=new Date(until+'T12:00:00');if(d<=end)out.push('2026-09-30');for(let m=new Date('2026-10-01T12:00:00');m<=end;m=new Date(m.getFullYear(),m.getMonth()+1,1)){let y=m.getFullYear(),mo=m.getMonth();for(let day of [15,20]){let x=new Date(y,mo,day);if(x<=end)out.push([y,String(mo+1).padStart(2,'0'),String(day).padStart(2,'0')].join('-'))}let last=new Date(y,mo+1,0);if(last<=end)out.push([y,String(mo+1).padStart(2,'0'),String(last.getDate()).padStart(2,'0')].join('-'))}return [...new Set(out)].sort()}
+function classify(x){let n=x.name.toLowerCase();if(x.type==='in'){if(n.includes('sueldo'))return'Sueldo';if(n.includes('bono'))return'Bono';if(n.includes('cts')||n.includes('gratific'))return'Beneficios';return'Otros'}if(n.includes('internet'))return'Internet';if(n.includes('spotify'))return'Spotify';if(n.includes('diplomado')||n.includes('upc'))return'UPC';if(n.includes('cmr'))return'CMR';if(n.includes('interbank')||n.includes('chatgpt'))return'Interbank';if(n.includes('bcp')||n.includes('colchón')||n.includes('celular nicole'))return'BCP';return'Otros gastos'}
+function bucketFor(date,cuts){return cuts.find(c=>date<=c)}
+function renderMatrix(until){let cuts=cutDates(until);if(!cuts.length){matrixWrap.innerHTML='';return}let rows=['Sueldo','Bono','Beneficios','Otros','Internet','Spotify','UPC','CMR','Interbank','BCP','Otros gastos'];let vals={};rows.forEach(r=>vals[r]={});let items=projectionItems(until);if(simulation&&simulation.impactDate<=until)items.push({name:'Simulación · '+simulation.method,amount:simulation.amount,date:simulation.impactDate,type:'out',sim:true});for(let x of items){let c=bucketFor(x.date,cuts);if(!c)continue;let r=classify(x);if(!vals[r][c])vals[r][c]=[];vals[r][c].push(x)}let sum=(r,c)=>((vals[r][c]||[]).reduce((a,x)=>a+x.amount,0));let detail=(r,c)=>{let a=vals[r][c]||[];if(!a.length)return'';let total=sum(r,c);let sub=a.map(x=>x.name.replace('Sueldo quincena','Sueldo').replace('Sueldo fin de mes','Sueldo')).join(' + ');return `<div class=cellMain>${fmt(total)}</div><div class=cellSub>${sub}</div>`};let income=['Sueldo','Bono','Beneficios','Otros'],expense=['Internet','Spotify','UPC','CMR','Interbank','BCP','Otros gastos'];let html=`<div class=matrixScroll><table class=matrix><thead><tr><th>Concepto</th>${cuts.map(c=>`<th>${dmy(c).slice(0,5)}<div class=cellSub>${c.slice(0,4)}</div></th>`).join('')}</tr></thead><tbody><tr class=group><td colspan="${cuts.length+1}">INGRESOS</td></tr>`;for(let r of income)html+=`<tr><td>${r}</td>${cuts.map(c=>`<td>${detail(r,c)}</td>`).join('')}</tr>`;html+=`<tr class=total><td>TOTAL INGRESOS</td>${cuts.map(c=>`<td>${fmt(income.reduce((a,r)=>a+sum(r,c),0))}</td>`).join('')}</tr><tr class=group><td colspan="${cuts.length+1}">EGRESOS</td></tr>`;for(let r of expense)html+=`<tr><td>${r}</td>${cuts.map(c=>`<td>${detail(r,c)}</td>`).join('')}</tr>`;html+=`<tr class=total><td>TOTAL EGRESOS</td>${cuts.map(c=>`<td>${fmt(expense.reduce((a,r)=>a+sum(r,c),0))}</td>`).join('')}</tr>`;let acc=Object.values(data.accounts).reduce((a,b)=>a+b,0);let periods=[];for(let c of cuts){let inc=income.reduce((a,r)=>a+sum(r,c),0),out=expense.reduce((a,r)=>a+sum(r,c),0),p=inc-out;periods.push([p,acc+=p])}html+=`<tr class=total><td>SALDO DEL PERIODO</td>${periods.map(x=>`<td class="${x[0]<0?'neg':'pos'}">${fmt(x[0])}</td>`).join('')}</tr><tr class=balance><td>ACUMULADO</td>${periods.map(x=>`<td class="${x[1]<0?'neg':'pos'}">${fmt(x[1])}</td>`).join('')}</tr></tbody></table></div><p class=tiny>El acumulado parte de tu saldo inicial de ${fmt(Object.values(data.accounts).reduce((a,b)=>a+b,0))}. Cada columna contiene solo los movimientos ocurridos desde el corte anterior hasta ese corte.</p>`;matrixWrap.innerHTML=html}
+function nextDueForCard(card,purchaseDate){let c=data.cards[card],d=new Date(purchaseDate+'T12:00:00'),y=d.getFullYear(),m=d.getMonth(),day=d.getDate();let statementMonth=day<=c.close?m:m+1;let dueMonth=statementMonth+1;let due=new Date(y,dueMonth,c.due);return [due.getFullYear(),String(due.getMonth()+1).padStart(2,'0'),String(due.getDate()).padStart(2,'0')].join('-')}
+function simulate(){let a=Number(simAmount.value),pd=simDate.value,method=simMethod.value;if(!a||!pd)return alert('Completa monto y fecha.');let impactDate=pd;if(data.cards[method])impactDate=nextDueForCard(method,pd);simulation={amount:a,purchaseDate:pd,method,impactDate};clearSimBtn.style.display='block';simResult.innerHTML=`<div class="simResult ok"><b>Simulación activa</b><div class=row><span>Compra</span><b>−${fmt(a)}</b></div><div class=row><span>Impacta</span><b>${dmy(impactDate)}</b></div><p class=tiny>No modifica tus saldos reales. Ya está incluida en la cronología y en la tabla por cortes.</p></div>`;renderProjection()}
+function clearSimulation(){simulation=null;clearSimBtn.style.display='none';simResult.innerHTML='';renderProjection()}
+function renderAll(){renderHome();renderMoves();renderDebts();renderProjection()}
+document.getElementById('todayLabel').textContent='Control iniciado el 26/09/2026 · V1.14';document.getElementById('simDate').value=today();document.getElementById('projectionDate').value='2026-12-31';setupChips();renderRegisterStart();renderAll();
+</script>
+</body></html>
