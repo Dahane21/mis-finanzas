@@ -161,7 +161,7 @@ body{background:#f3f6fa}
 
 
 <style id="v115-mobile-fixes">
-/* V1.15 — ajustes de legibilidad móvil */
+/* V1.16 — conciliación de proyectados y pagos reales */
 /* Próximos movimientos: listado vertical, no tarjetas en dos columnas */
 #inicio #nextMoves{display:block!important}
 #inicio #nextMoves .row{display:flex!important;align-items:center!important;justify-content:space-between!important;min-height:0!important;padding:13px 34px 13px 4px!important;border:0!important;border-bottom:1px solid #e5eaf0!important;border-radius:0!important;box-shadow:none!important;background:#fff!important}
@@ -218,37 +218,68 @@ const initial={accounts:{'BCP Ahorros':4.46,'Efectivo':36.80},cards:{
  'BCP Crédito':{limit:6900,debt:2726.46,close:25,due:20,nextPay:328.56,nextDate:'2026-10-20'}},
  installments:[{card:'BCP Crédito',name:'Colchón',monthly:124.62,total:12,nextNo:2,nextDate:'2026-10-20'},{card:'BCP Crédito',name:'Celular Nicole',monthly:196.62,total:12,nextNo:2,nextDate:'2026-10-20'},{card:'CMR',name:'Celular Alejandra',monthly:119.90,total:12,nextNo:6,nextDate:'2026-10-15'}],
  commitments:[
-  {name:'Pasajes reservados',amount:15,date:'2026-09-30',kind:'Fijo'},
-  {name:'Internet móvil',amount:29.95,date:'2026-10-03',kind:'Fijo'},
-  {name:'CMR - próximo pago',amount:1025.82,date:'2026-10-15',kind:'Tarjeta'},
-  {name:'Interbank - próximo pago (S/)',amount:211.23,date:'2026-10-20',kind:'Tarjeta'},
-  {name:'BCP - próximo pago',amount:328.56,date:'2026-10-20',kind:'Tarjeta'},
-  {name:'Diplomado',amount:609.10,date:'2026-10-31',kind:'Fijo'},
-  {name:'Spotify',amount:6.18,date:'2026-09-30',kind:'Fijo'},
-  {name:'ChatGPT · US$12.27 · TC 3.75',amount:46.0125,date:'2026-10-20',kind:'Fijo USD'},
-  {name:'CMR - pago ciclo siguiente',amount:297.77,date:'2026-11-15',kind:'Tarjeta'}],
+  {id:'pasajes-2026-09',status:'pending',name:'Pasajes reservados',amount:15,date:'2026-09-30',kind:'Fijo'},
+  {id:'internet-2026-10',status:'pending',name:'Internet móvil',amount:29.95,date:'2026-10-03',kind:'Fijo'},
+  {id:'cmr-2026-10',status:'pending',name:'CMR - próximo pago',amount:1025.82,date:'2026-10-15',kind:'Tarjeta'},
+  {id:'interbank-2026-10',status:'pending',name:'Interbank - próximo pago (S/)',amount:211.23,date:'2026-10-20',kind:'Tarjeta'},
+  {id:'bcp-2026-10',status:'pending',name:'BCP - próximo pago',amount:328.56,date:'2026-10-20',kind:'Tarjeta'},
+  {id:'upc-2026-10',status:'pending',name:'Diplomado',amount:609.10,date:'2026-10-31',kind:'Fijo'},
+  {id:'spotify-2026-09',status:'pending',name:'Spotify',amount:6.18,date:'2026-09-30',kind:'Fijo'},
+  {id:'chatgpt-2026-10',status:'pending',name:'ChatGPT · US$12.27 · TC 3.75',amount:46.0125,date:'2026-10-20',kind:'Fijo USD'},
+  {id:'cmr-2026-11',status:'pending',name:'CMR - pago ciclo siguiente',amount:297.77,date:'2026-11-15',kind:'Tarjeta'}],
  forecast:[
-  {name:'Sueldo fin de mes',amount:1000,date:'2026-09-30',type:'in'},
-  {name:'Descuento adelanto BCP + comisión',amount:750,date:'2026-09-30',type:'out'},
-  {name:'Nikol',amount:100,date:'2026-10-01',type:'in'},
-  {name:'Sueldo quincena',amount:1000,date:'2026-10-15',type:'in'},
-  {name:'Nicole - celular',amount:137,date:'2026-10-15',type:'in'},
-  {name:'Sueldo fin de mes',amount:1000,date:'2026-10-31',type:'in'},
-  {name:'Sueldo quincena',amount:1000,date:'2026-11-15',type:'in'},
-  {name:'Nicole - celular',amount:137,date:'2026-11-15',type:'in'},
-  {name:'CTS',amount:1000,date:'2026-11-15',type:'in'},
-  {name:'Sueldo fin de mes',amount:1000,date:'2026-11-30',type:'in'},
-  {name:'Sueldo quincena',amount:1000,date:'2026-12-15',type:'in'},
-  {name:'Nicole - celular',amount:137,date:'2026-12-15',type:'in'},
-  {name:'Gratificación',amount:2400,date:'2026-12-15',type:'in'},
-  {name:'Sueldo fin de mes',amount:1000,date:'2026-12-31',type:'in'}]};
+  {id:'sueldo-fin-2026-09',status:'pending',name:'Sueldo fin de mes',amount:1000,date:'2026-09-30',type:'in'},
+  {id:'adelanto-2026-09',status:'pending',name:'Descuento adelanto BCP + comisión',amount:750,date:'2026-09-30',type:'out'},
+  {id:'nikol-2026-10',status:'pending',name:'Nikol',amount:100,date:'2026-10-01',type:'in'},
+  {id:'sueldo-q-2026-10',status:'pending',name:'Sueldo quincena',amount:1000,date:'2026-10-15',type:'in'},
+  {id:'nicole-2026-10',status:'pending',name:'Nicole - celular',amount:137,date:'2026-10-15',type:'in'},
+  {id:'sueldo-fin-2026-10',status:'pending',name:'Sueldo fin de mes',amount:1000,date:'2026-10-31',type:'in'},
+  {id:'sueldo-q-2026-11',status:'pending',name:'Sueldo quincena',amount:1000,date:'2026-11-15',type:'in'},
+  {id:'nicole-2026-11',status:'pending',name:'Nicole - celular',amount:137,date:'2026-11-15',type:'in'},
+  {id:'cts-2026-11',status:'pending',name:'CTS',amount:1000,date:'2026-11-15',type:'in'},
+  {id:'sueldo-fin-2026-11',status:'pending',name:'Sueldo fin de mes',amount:1000,date:'2026-11-30',type:'in'},
+  {id:'sueldo-q-2026-12',status:'pending',name:'Sueldo quincena',amount:1000,date:'2026-12-15',type:'in'},
+  {id:'nicole-2026-12',status:'pending',name:'Nicole - celular',amount:137,date:'2026-12-15',type:'in'},
+  {id:'grati-2026-12',status:'pending',name:'Gratificación',amount:2400,date:'2026-12-15',type:'in'},
+  {id:'sueldo-fin-2026-12',status:'pending',name:'Sueldo fin de mes',amount:1000,date:'2026-12-31',type:'in'}]};
 let data=JSON.parse(localStorage.getItem('finanzasDahaneV1')||'null')||{...initial,movements:[]};
 if(!data.movements)data.movements=[];
 // Migración V1.1: agrega compromisos nuevos aunque el navegador ya tenga datos guardados de la V1.
-if(!data.commitments.some(x=>x.name==='CMR - pago ciclo siguiente'&&x.date==='2026-11-15'))data.commitments.push({name:'CMR - pago ciclo siguiente',amount:297.77,date:'2026-11-15',kind:'Tarjeta'});
-if(!data.commitments.some(x=>x.name==='Spotify'&&x.date==='2026-09-30'))data.commitments.push({name:'Spotify',amount:6.18,date:'2026-09-30',kind:'Fijo'});
-if(!data.commitments.some(x=>x.name.startsWith('ChatGPT')&&x.date==='2026-10-20'))data.commitments.push({name:'ChatGPT · US$12.27 · TC 3.75',amount:46.0125,date:'2026-10-20',kind:'Fijo USD'});
+if(!data.commitments.some(x=>x.name==='CMR - pago ciclo siguiente'&&x.date==='2026-11-15'))data.commitments.push({id:'cmr-2026-11',status:'pending',name:'CMR - pago ciclo siguiente',amount:297.77,date:'2026-11-15',kind:'Tarjeta'});
+if(!data.commitments.some(x=>x.name==='Spotify'&&x.date==='2026-09-30'))data.commitments.push({id:'spotify-2026-09',status:'pending',name:'Spotify',amount:6.18,date:'2026-09-30',kind:'Fijo'});
+if(!data.commitments.some(x=>x.name.startsWith('ChatGPT')&&x.date==='2026-10-20'))data.commitments.push({id:'chatgpt-2026-10',status:'pending',name:'ChatGPT · US$12.27 · TC 3.75',amount:46.0125,date:'2026-10-20',kind:'Fijo USD'});
 data.installments=initial.installments;
+
+// V1.16: normaliza identificadores/estados sin borrar datos existentes.
+function slugKey(v){return String(v||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}
+(data.commitments||[]).forEach(x=>{if(!x.id)x.id='c-'+slugKey(x.name)+'-'+x.date;if(!x.status)x.status='pending'});
+(data.forecast||[]).forEach(x=>{if(!x.id)x.id='f-'+slugKey(x.name)+'-'+x.date;if(!x.status)x.status='pending'});
+
+function scheduleDone(id){return data.movements.some(m=>m.linkedScheduleId===id)}
+function schedulePaidAmount(id){return data.movements.filter(m=>m.linkedScheduleId===id).reduce((a,m)=>a+Number(m.amount||0),0)}
+function scheduleRemaining(x){return Math.max(0,Number(x.amount||0)-schedulePaidAmount(x.id))}
+function occurrenceStatus(x){let paid=schedulePaidAmount(x.id);if(paid+0.005>=Number(x.amount||0))return 'paid';if(paid>0)return 'partial';if(x.date<today())return 'overdue';return 'pending'}
+function scheduleLabel(x){let st=occurrenceStatus(x);return st==='paid'?'Pagado ✓':st==='partial'?'Pago parcial':st==='overdue'?'Vencido':'Pendiente'}
+function cardKey(card){return card==='CMR'?'CMR':card.replace(' Crédito','')}
+function commitmentForCard(card,date){let key=cardKey(card).toLowerCase();return (data.commitments||[]).filter(x=>x.kind==='Tarjeta'&&x.date>=date&&occurrenceStatus(x)!=='paid').sort((a,b)=>a.date.localeCompare(b.date)).find(x=>x.name.toLowerCase().startsWith(key))}
+function nearbyFixed(amount,date){let t=new Date(date+'T12:00:00').getTime();return allFixedOccurrences(addMonthsISO(date,1,Number(date.slice(-2)))).filter(x=>occurrenceStatus(x)!=='paid').map(x=>({...x,dist:Math.abs(new Date(x.date+'T12:00:00').getTime()-t)/86400000})).filter(x=>x.dist<=7&&Math.abs(Number(x.amount)-Number(amount))<0.02).sort((a,b)=>a.dist-b.dist)[0]}
+function incomeCandidates(kind,date){let t=new Date(date+'T12:00:00').getTime(), k=String(kind||'').toLowerCase();return allIncomeOccurrences(addMonthsISO(date,2,Number(date.slice(-2)))).filter(x=>occurrenceStatus(x)!=='paid'&&Math.abs(new Date(x.date+'T12:00:00').getTime()-t)/86400000<=20).filter(x=>{let n=x.name.toLowerCase();if(k==='bono')return n.includes('bono');if(k==='sueldo')return n.includes('sueldo');if(k==='devolución de préstamo')return n.includes('nikol')||n.includes('nicole');return false}).sort((a,b)=>Math.abs(a.date.localeCompare(date))-Math.abs(b.date.localeCompare(date)))}
+function allFixedOccurrences(until){let base=(data.commitments||[]).filter(x=>x.kind!=='Tarjeta').map(x=>({...x,type:'out'}));return [...base,...recurringExpenseItems(until)]}
+function allIncomeOccurrences(until){return [...(data.forecast||[]).filter(x=>x.type==='in'),...recurringIncomeItems(until)]}
+
+// Reconciliaciones históricas inequívocas conocidas antes de V1.16.
+// Solo enlaza movimientos exactos ya registrados; no reclasifica movimientos ambiguos.
+function migrateKnownLinks(){
+ const exact=[
+  {date:'2026-09-30',desc:'Spotify',target:'spotify-2026-09',amount:6.18},
+  {date:'2026-09-30',desc:'Sueldo',target:'sueldo-fin-2026-09',amount:1003.65},
+  {date:'2026-09-30',desc:'Adelanto de sueldo',target:'adelanto-2026-09',amount:735},
+  {date:'2026-09-30',desc:'Devolucion de préstamo Nikol rugel',target:'nikol-2026-10',amount:100}
+ ];
+ for(const e of exact){let m=(data.movements||[]).find(m=>!m.linkedScheduleId&&m.date===e.date&&Math.abs(Number(m.amount)-e.amount)<.01&&String(m.desc||'').toLowerCase()===e.desc.toLowerCase());if(m)m.linkedScheduleId=e.target}
+}
+migrateKnownLinks();
+localStorage.setItem('finanzasDahaneV1',JSON.stringify(data));
 let editId=null;let moveType='compra',method='Yape',creditMode='directo';
 const fmt=n=>'S/.'+Number(n||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
 const dmy=s=>{let [y,m,d]=s.split('-');return `${d}/${m}/${y}`};
@@ -256,23 +287,23 @@ const today=()=>{const n=new Date();return [n.getFullYear(),String(n.getMonth()+
 function addMonthsISO(dateStr,months,day){let [y,m]=dateStr.split('-').map(Number);let d=new Date(y,m-1+months,day);return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-')}
 function recurringExpenseItems(until){let out=[];let end=new Date(until+'T12:00:00');
 // Internet móvil: S/29.95 cada día 3, desde octubre 2026
-for(let d=new Date('2026-11-03T12:00:00');d<=end;d=new Date(d.getFullYear(),d.getMonth()+1,3)){let dt=[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),'03'].join('-');out.push({name:'Internet móvil',amount:29.95,date:dt,type:'out',recurring:true});}
+for(let d=new Date('2026-11-03T12:00:00');d<=end;d=new Date(d.getFullYear(),d.getMonth()+1,3)){let dt=[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),'03'].join('-');out.push({id:'internet-2026-10',status:'pending',name:'Internet móvil',amount:29.95,date:dt,type:'out',recurring:true});}
 // Spotify: S/6.18 el último día de cada mes. Septiembre está cargado como compromiso inicial.
-for(let d=new Date('2026-10-31T12:00:00');d<=end;d=new Date(d.getFullYear(),d.getMonth()+2,0)){let dt=[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');out.push({name:'Spotify',amount:6.18,date:dt,type:'out',recurring:true});}
+for(let d=new Date('2026-10-31T12:00:00');d<=end;d=new Date(d.getFullYear(),d.getMonth()+2,0)){let dt=[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');out.push({id:'spotify-2026-09',status:'pending',name:'Spotify',amount:6.18,date:dt,type:'out',recurring:true});}
 // UPC: S/609.10 a fin de mes por 9 meses, desde 31/10/2026. Octubre está cargado como compromiso inicial.
-for(let i=1;i<9;i++){let d=new Date(2026,10+i,0);let dt=[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');if(dt<=until)out.push({name:'Diplomado UPC',amount:609.10,date:dt,type:'out',recurring:true});}
+for(let i=1;i<9;i++){let d=new Date(2026,10+i,0);let dt=[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');if(dt<=until)out.push({id:'upc-'+dt.slice(0,7),status:'pending',name:`Diplomado UPC · ${i+1}/9`,amount:609.10,date:dt,type:'out',kind:'Fijo',recurring:true});}
 // ChatGPT: US$12.27 mensual en Interbank, TC referencial fijo S/3.75 = S/46.01. Octubre está cargado como compromiso inicial.
-for(let d=new Date('2026-11-20T12:00:00');d<=end;d=new Date(d.getFullYear(),d.getMonth()+1,20)){let dt=[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),'20'].join('-');out.push({name:'ChatGPT · US$12.27 · TC 3.75',amount:46.0125,date:dt,type:'out',recurring:true,usd:12.27});}
+for(let d=new Date('2026-11-20T12:00:00');d<=end;d=new Date(d.getFullYear(),d.getMonth()+1,20)){let dt=[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),'20'].join('-');out.push({id:'chatgpt-2026-10',status:'pending',name:'ChatGPT · US$12.27 · TC 3.75',amount:46.0125,date:dt,type:'out',recurring:true,usd:12.27});}
 return out}
-function recurringIncomeItems(until){let out=[];let d=new Date('2026-10-10T12:00:00'),end=new Date(until+'T12:00:00');while(d<=end){let dt=[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),'10'].join('-');if(dt>=START)out.push({name:'Bono',amount:200,date:dt,type:'in',recurring:true});d=new Date(d.getFullYear(),d.getMonth()+1,10)}return out}
+function recurringIncomeItems(until){let out=[];let d=new Date('2026-10-10T12:00:00'),end=new Date(until+'T12:00:00');while(d<=end){let dt=[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),'10'].join('-');if(dt>=START)out.push({id:'bono-'+dt.slice(0,7),status:'pending',name:'Bono',amount:200,date:dt,type:'in',recurring:true});d=new Date(d.getFullYear(),d.getMonth()+1,10)}return out}
 function knownInstallmentItems(until){let out=[];for(const x of data.installments){for(let no=x.nextNo+1;no<=x.total;no++){let dt=addMonthsISO(x.nextDate,no-x.nextNo,Number(x.nextDate.slice(-2)));if(dt>until)break;let card=x.card.replace(' Crédito','');let knownTotal=data.commitments.some(c=>c.date===dt&&c.kind==='Tarjeta'&&c.name.startsWith(card+' -'));if(knownTotal)continue;out.push({name:`${card} · ${x.name} · Cuota ${no}/${x.total}`,amount:x.monthly,date:dt,type:'out',installment:true});}}return out}
 function movementCreditItems(until){let out=[];for(const m of data.movements){if(m.type!=='compra'||!data.cards[m.method])continue;if(m.creditMode==='cuotas'&&m.installmentCount>1){let first=nextDueForCard(m.method,m.date),q=Number(m.installmentAmount||m.amount/m.installmentCount);for(let no=1;no<=m.installmentCount;no++){let dt=addMonthsISO(first,no-1,Number(first.slice(-2)));if(dt<=until)out.push({name:`${m.desc||m.category} · ${m.method.replace(' Crédito','')} · Cuota ${no}/${m.installmentCount}`,amount:q,date:dt,type:'out',real:true});}}else{let dt=nextDueForCard(m.method,m.date);if(dt<=until)out.push({name:`${m.desc||m.category} · ${m.method.replace(' Crédito','')} · compra directa`,amount:m.amount,date:dt,type:'out',real:true});}}return out}
 function persist(){localStorage.setItem('finanzasDahaneV1',JSON.stringify(data))}
 function accountBalances(){let a={...data.accounts};for(const m of data.movements){if(m.type==='compra'&&(m.method==='Yape'||m.method==='BCP Ahorros'))a['BCP Ahorros']-=m.amount;else if(m.type==='compra'&&m.method==='Efectivo')a.Efectivo-=m.amount;else if(m.type==='ingreso')a[m.account]=(a[m.account]||0)+m.amount;else if(m.type==='pago_tarjeta')a[m.from]=(a[m.from]||0)-m.amount;else if(m.type==='transferencia'){a[m.from]-=m.amount;a[m.to]=(a[m.to]||0)+m.amount}}return a}
 function cardState(){let c=JSON.parse(JSON.stringify(data.cards));for(const m of data.movements){if(m.type==='compra'&&c[m.method])c[m.method].debt+=m.amount;if(m.type==='pago_tarjeta'&&c[m.card])c[m.card].debt-=m.amount}return c}
 function currentBalance(){return Object.values(accountBalances()).reduce((a,b)=>a+b,0)}
-function commitmentHorizon(base=today()){let [y,m,d]=base.split('-').map(Number);let end;if(d<=15){end=new Date(y,m-1,15)}else{end=new Date(y,m,0)}return [end.getFullYear(),String(end.getMonth()+1).padStart(2,'0'),String(end.getDate()).padStart(2,'0')].join('-')}
-function activeCommitments(){let h=commitmentHorizon();return [...data.commitments.filter(x=>x.date>=today()&&x.date<=h),...knownInstallmentItems(h).filter(x=>x.date>=today()),...movementCreditItems(h).filter(x=>x.date>=today())]}
+function commitmentHorizon(base=today()){let [y,m,d]=base.split('-').map(Number);let end=d<=20?new Date(y,m-1,20):new Date(y,m,0);return [end.getFullYear(),String(end.getMonth()+1).padStart(2,'0'),String(end.getDate()).padStart(2,'0')].join('-')}
+function activeCommitments(){let h=commitmentHorizon(),t=today();let fixed=allFixedOccurrences(h).filter(x=>x.date>=t&&x.date<=h&&x.name!=='Pasajes reservados'&&occurrenceStatus(x)!=='paid').map(x=>({...x,amount:scheduleRemaining(x)}));let cards=(data.commitments||[]).filter(x=>x.kind==='Tarjeta'&&x.date>=t&&x.date<=h&&occurrenceStatus(x)!=='paid').map(x=>({...x,amount:scheduleRemaining(x)}));return [...fixed,...cards,...knownInstallmentItems(h).filter(x=>x.date>=t),...movementCreditItems(h).filter(x=>x.date>=t)]}
 function committed(){return activeCommitments().reduce((a,b)=>a+b.amount,0)}
 function free(){return currentBalance()-committed()}
 function go(id){document.querySelectorAll('.page').forEach(x=>x.classList.toggle('active',x.id===id));document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===id));renderAll();scrollTo(0,0)}
@@ -280,7 +311,7 @@ function openModal(t,html){modalTitle.textContent=t;modalBody.innerHTML=html;mod
 function showBalances(){let a=accountBalances();openModal('Saldo actual',Object.entries(a).map(([k,v])=>`<div class=row><span>${k}<div class=sub>${k==='BCP Ahorros'?'Yape descuenta de esta cuenta':''}</div></span><b>${fmt(v)}</b></div>`).join(''))}
 function showCommitments(){openModal(`Dinero comprometido · hasta ${dmy(commitmentHorizon())}`,activeCommitments().sort((a,b)=>a.date.localeCompare(b.date)).map(x=>`<div class=row><span>${x.name}<div class=sub>${dmy(x.date)} · ${x.kind}</div></span><b>${fmt(x.amount)}</b></div>`).join('')+`<div class=row><b>Total</b><b>${fmt(committed())}</b></div>`)}
 function showFree(){openModal(`Dinero libre · hasta ${dmy(commitmentHorizon())}`,`<div class=row><span>Saldo actual</span><b>${fmt(currentBalance())}</b></div><div class=row><span>Menos compromisos conocidos</span><b class=neg>− ${fmt(committed())}</b></div><div class=row><b>Dinero libre</b><b class="${free()<0?'neg':'pos'}">${fmt(free())}</b></div><p class=tiny>Si sale negativo, significa que tu saldo de hoy todavía no cubre todos los compromisos cargados. El Proyectado incorpora los ingresos futuros.</p>`)}
-function renderHome(){balanceKpi.textContent=fmt(currentBalance());committedKpi.textContent=fmt(committed());freeKpi.textContent=fmt(free());let h=commitmentHorizon();commitHorizon.textContent=`Hasta ${dmy(h)} · toca para ver detalle`;freeHorizon.textContent=`Disponible libre hasta ${dmy(h)}`;let homeUntil=addMonthsISO(today(),3,Number(today().slice(-2)));let all=[...data.forecast.filter(x=>x.name!=='Bono').map(x=>({...x,source:'forecast'})),...recurringIncomeItems(homeUntil),...recurringExpenseItems(homeUntil),...data.commitments.map(x=>({name:x.name,amount:x.amount,date:x.date,type:'out'}))].filter(x=>x.date>=START).sort((a,b)=>a.date.localeCompare(b.date)).slice(0,6);nextMoves.innerHTML=all.map(x=>`<div class=row><span><b>${dmy(x.date).slice(0,5)}</b> ${x.name}</span><span class="amt ${x.type==='in'?'pos':'neg'}">${x.type==='in'?'+':'−'}${fmt(x.amount)}</span></div>`).join('');let r=[...data.movements].sort((a,b)=>(b.date+b.id).localeCompare(a.date+a.id)).slice(0,5);recentMoves.innerHTML=r.length?r.map(moveRow).join(''):'<div class=empty>Aún no registraste movimientos.</div>'}
+function renderHome(){balanceKpi.textContent=fmt(currentBalance());committedKpi.textContent=fmt(committed());freeKpi.textContent=fmt(free());let h=commitmentHorizon();commitHorizon.textContent=`Hasta ${dmy(h)} · toca para ver detalle`;freeHorizon.textContent=`Disponible libre hasta ${dmy(h)}`;let homeUntil=addMonthsISO(today(),3,Number(today().slice(-2)));let all=[...allIncomeOccurrences(homeUntil),...allFixedOccurrences(homeUntil),...(data.commitments||[]).filter(x=>x.kind==='Tarjeta').map(x=>({...x,type:'out'}))].filter(x=>x.date>=today()&&x.name!=='Pasajes reservados'&&occurrenceStatus(x)!=='paid').sort((a,b)=>a.date.localeCompare(b.date)).slice(0,6);nextMoves.innerHTML=all.map(x=>`<div class=row><span><b>${dmy(x.date).slice(0,5)}</b> ${x.name}<div class=sub>${scheduleLabel(x)}</div></span><span class="amt ${x.type==='in'?'pos':'neg'}">${x.type==='in'?'+':'−'}${fmt(scheduleRemaining(x))}</span></div>`).join('')||'<div class=empty>Sin movimientos próximos pendientes.</div>';let r=[...data.movements].sort((a,b)=>(b.date+b.id).localeCompare(a.date+a.id)).slice(0,5);recentMoves.innerHTML=r.length?r.map(moveRow).join(''):'<div class=empty>Aún no registraste movimientos.</div>'}
 function moveRow(m){let name=m.type==='compra'?(m.desc||m.category):m.type==='ingreso'?(m.desc||'Ingreso'):m.type==='pago_tarjeta'?`Pago ${m.card}`:`${m.from} → ${m.to}`;let meta=m.type==='compra'?m.method:m.type==='ingreso'?m.account:m.type==='pago_tarjeta'?m.from:'Transferencia';return `<div class=row><span><b>${name}</b><div class=sub>${dmy(m.date)} · ${meta}</div></span><span><span class="amt ${m.type==='ingreso'?'pos':'neg'}">${m.type==='ingreso'?'+':'−'}${fmt(m.amount)}</span><div class=editBtns><button class=mini onclick="editMove('${m.id}')">Editar</button><button class="mini danger" onclick="deleteMove('${m.id}')">×</button></div></span></div>`}
 let regState={type:null,step:0,pay:null,card:null,mode:null};
 function setupChips(){renderRegisterStart()}
@@ -315,12 +346,12 @@ function saveWizardCompra(){
  }
  data.movements.push(m);persist();renderAll();regWizard.innerHTML=regHead('Compra guardada')+`<div class=confirmBox>✓ Movimiento guardado correctamente.</div><button class=secondary style="width:100%;margin-top:10px" onclick="undoLast('${m.id}')">Deshacer</button><button class=primary style="margin-top:10px" onclick="renderRegisterStart()">Registrar otro</button>`
 }
-function renderIngreso(){regWizard.innerHTML=regHead('Ingreso')+`<div class=field><label>Monto</label><input id=wAmount class=moneyInput type=number step=.01 placeholder="S/ 0.00"></div><div class=field><label>¿Dónde lo recibiste?</label><select id=wAccount><option>BCP Ahorros</option><option>Efectivo</option></select></div><div class=field><label>Concepto</label><input id=wDesc placeholder="Ej. devolución"></div><div class=field><label>Fecha</label><input id=wDate type=date value="${today()}"></div><button class=primary onclick="saveSimple('ingreso')">Guardar ingreso</button>`}
+function renderIngreso(){regWizard.innerHTML=regHead('Ingreso')+`<div class=field><label>Monto</label><input id=wAmount class=moneyInput type=number step=.01 placeholder="S/ 0.00"></div><div class=field><label>¿Dónde lo recibiste?</label><select id=wAccount><option>BCP Ahorros</option><option>Efectivo</option></select></div><div class=field><label>Tipo de ingreso</label><select id=wIncomeType><option>Sueldo</option><option>Bono</option><option>Devolución de préstamo</option><option>Apoyo/transporte</option><option>Otro</option></select></div><div class=field><label>Descripción (opcional)</label><input id=wDesc placeholder="Ej. sueldo fin de mes"></div><div class=field><label>Fecha</label><input id=wDate type=date value="${today()}"></div><button class=primary onclick="saveSimple('ingreso')">Guardar ingreso</button>`}
 function renderPago(){regWizard.innerHTML=regHead('Pagar tarjeta')+`<div class=field><label>Monto</label><input id=wAmount class=moneyInput type=number step=.01 placeholder="S/ 0.00"></div><div class=field><label>Tarjeta</label><select id=wCard><option>CMR</option><option>BCP Crédito</option><option>Interbank Crédito</option></select></div><div class=field><label>Sale de</label><select id=wAccount><option>BCP Ahorros</option><option>Efectivo</option></select></div><div class=field><label>Fecha</label><input id=wDate type=date value="${today()}"></div><button class=primary onclick="saveSimple('pago_tarjeta')">Guardar pago</button>`}
 function renderMas(){regWizard.innerHTML=regHead('Más')+`<div class="wizardChoices"><button class="wizardChoice" onclick="renderTransfer()">🔄<br>Transferir dinero</button><button class="wizardChoice" onclick="renderBackup()">🛡️<br>Respaldo</button><button class="wizardChoice" onclick="renderAdjust()">⚙️<br>Corregir saldo</button></div>`}
 function renderBackup(){regWizard.innerHTML=regHead('Respaldo')+`<div class="backupBox"><div class="backupIcon">🛡️</div><b>Protege tus movimientos</b><p class="sub">Exporta una copia de todos tus saldos, tarjetas, cuotas y movimientos. Podrás importarla en otra versión o dispositivo.</p></div><button class="primary backupExport" onclick="exportBackup()">⬇ Exportar mis datos</button><button class="secondary backupImport" onclick="document.getElementById('backupFile').click()">⬆ Importar respaldo</button><input id="backupFile" type="file" accept="application/json,.json" style="display:none" onchange="importBackup(this)"><div class="tiny backupNote">El respaldo se guarda como archivo .json. Importar reemplaza los datos actuales solo después de tu confirmación.</div>`}
 function exportBackup(){
- const payload={app:'Finanzas Dahane',version:'1.14',exportedAt:new Date().toISOString(),storageKey:'finanzasDahaneV1',data:data};
+ const payload={app:'Finanzas Dahane',version:'1.16',exportedAt:new Date().toISOString(),storageKey:'finanzasDahaneV1',data:data};
  const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
  const url=URL.createObjectURL(blob),a=document.createElement('a');
  const stamp=new Date().toISOString().slice(0,10).replaceAll('-','');
@@ -345,19 +376,31 @@ function renderAdjust(){let a=accountBalances();regWizard.innerHTML=regHead('Cor
 function saveSimple(t){
  let amount=Number(wAmount.value),date=wDate.value;if(!amount||amount<=0||!date)return alert('Completa un monto válido y la fecha.');
  let m={id:Date.now().toString(),type:t,amount,date,desc:(window.wDesc?.value||'').trim()};
- if(t==='ingreso')m.account=wAccount.value;
+ if(t==='ingreso'){
+   m.account=wAccount.value;m.incomeType=wIncomeType.value;
+   let cand=incomeCandidates(m.incomeType,date)[0];
+   if(cand&&confirm(`¿Este ingreso corresponde a "${cand.name}"?\n\nPrevisto: ${fmt(cand.amount)} · ${dmy(cand.date)}\nRecibido: ${fmt(amount)} · ${dmy(date)}\n\nAceptar lo marcará como realizado y no se volverá a sumar en Proyectado.`))m.linkedScheduleId=cand.id;
+ }
  if(t==='pago_tarjeta'){
    m.card=wCard.value;m.from=wAccount.value;
    let balances=accountBalances(),available=balances[m.from]||0,card=cardState()[m.card];
    if(amount>available+.001)return alert(`Saldo insuficiente. Tienes ${fmt(available)} disponibles en ${m.from}.`);
    if(amount>card.debt+.001)return alert(`El pago supera la deuda actual de ${m.card.replace(' Crédito','')}, que es ${fmt(card.debt)}.`);
+   let cand=commitmentForCard(m.card,date);
+   if(cand&&confirm(`¿Aplicar este pago al estado pendiente de ${cardKey(m.card)}?\n\nPendiente: ${fmt(scheduleRemaining(cand))} · vence ${dmy(cand.date)}\nPago: ${fmt(amount)} · ${dmy(date)}`))m.linkedScheduleId=cand.id;
  }
  if(t==='transferencia'){
    m.from=wFrom.value;m.to=wTo.value;if(m.from===m.to)return alert('Origen y destino deben ser distintos.');
    let available=accountBalances()[m.from]||0;
    if(amount>available+.001)return alert(`Saldo insuficiente. Tienes ${fmt(available)} disponibles en ${m.from}.`);
  }
- data.movements.push(m);persist();renderAll();renderRegisterStart()
+ data.movements.push(m);
+ // Para gastos fijos: coincidencia exacta de monto + compromiso dentro de ±7 días.
+ if(t==='compra'&&!data.cards[m.method]){
+   let cand=nearbyFixed(amount,date);
+   if(cand&&confirm(`¿Este pago corresponde a "${cand.name}"?\n\nProgramado: ${fmt(cand.amount)} · ${dmy(cand.date)}\nPagado: ${fmt(amount)} · ${dmy(date)}`))m.linkedScheduleId=cand.id;
+ }
+ persist();renderAll();renderRegisterStart()
 }
 function saveAdjustment(){let acct=wAccount.value,target=Number(wAmount.value),current=accountBalances()[acct];if(!Number.isFinite(target)||target<0)return alert('Indica un saldo real válido (0 o mayor).');let diff=target-current;if(Math.abs(diff)<.005)return alert('El saldo ya coincide.');data.movements.push({id:Date.now().toString(),type:'ingreso',amount:Math.abs(diff),date:today(),desc:'Ajuste de saldo · '+(wDesc.value||'reconciliación'),account:acct,adjustment:true,sign:diff>0?1:-1});if(diff<0){let m=data.movements[data.movements.length-1];m.type='compra';m.method=acct==='BCP Ahorros'?'Yape':'Efectivo';m.category='Otros'}persist();renderAll();renderRegisterStart()}
 function undoLast(id){data.movements=data.movements.filter(x=>x.id!==id);persist();renderAll();renderRegisterStart()}
@@ -368,7 +411,13 @@ function resetForm(){renderRegisterStart()}
 function renderMoves(){let r=[...data.movements].sort((a,b)=>(b.date+b.id).localeCompare(a.date+a.id));allMoves.innerHTML=r.length?r.map(moveRow).join(''):'<div class=empty>Aquí aparecerán tus movimientos.</div>'}
 function renderDebts(){let c=cardState();debtCards.innerHTML=Object.entries(c).map(([name,x])=>`<div class="card debtCard" onclick="openDebtDetail('${name}')"><div class=debtHead><div><h2>${name.replace(' Crédito','')}</h2><div class=sub>Cierra día ${x.close} · paga día ${x.due}</div></div><span class=badge>${Math.round(x.debt/x.limit*100)}% usado</span></div><div class=row><span>Deuda total</span><b>${fmt(x.debt)}</b></div><div class=row><span>Próximo pago<div class=sub>${dmy(x.nextDate)}</div></span><b>${fmt(x.nextPay)}${x.usd?` + US$ ${x.usd.toFixed(2)}`:''}</b></div><div class=progress><i style="width:${Math.min(100,x.debt/x.limit*100)}%"></i></div><div class=tiny>Línea ${fmt(x.limit)} · disponible aprox. ${fmt(x.limit-x.debt)}</div><div class=debtHint>Toca para ver compras y cuotas →</div></div>`).join('');installments.innerHTML=data.installments.map(x=>`<div class=row><span><b>${x.name}</b><div class=sub>${x.card.replace(' Crédito','')} · próxima cuota ${x.nextNo}/${x.total} · ${dmy(x.nextDate)}</div></span><b>${fmt(x.monthly)}/mes</b></div>`).join('')}
 function openDebtDetail(name){let c=cardState()[name],known=data.installments.filter(x=>x.card===name),mov=data.movements.filter(m=>m.type==='compra'&&m.method===name).sort((a,b)=>b.date.localeCompare(a.date));let rows=`<div class=row><span>Deuda total</span><b>${fmt(c.debt)}</b></div><div class=row><span>Próximo pago<div class=sub>${dmy(c.nextDate)}</div></span><b>${fmt(c.nextPay)}${c.usd?` + US$ ${c.usd.toFixed(2)}`:''}</b></div>`;rows+=known.map(x=>`<div class=row><span><b>${x.name}</b><div class=sub>Cuota ${x.nextNo}/${x.total} · ${dmy(x.nextDate)}</div></span><b>${fmt(x.monthly)}</b></div>`).join('');if(name==='Interbank Crédito')rows+=`<div class=row><span><b>ChatGPT</b><div class=sub>US$12.27 · TC 3.75</div></span><b>≈ ${fmt(46.0125)}</b></div>`;rows+=mov.map(m=>`<div class=row><span><b>${m.desc||m.category}</b><div class=sub>${dmy(m.date)} · ${m.creditMode==='cuotas'?`${m.installmentCount} cuotas de ${fmt(m.installmentAmount||m.amount/m.installmentCount)}`:'Compra directa'}</div></span><b>${fmt(m.amount)}</b></div>`).join('');if(!known.length&&!mov.length&&name!=='Interbank Crédito')rows+='<div class=empty>No hay compras detalladas adicionales registradas.</div>';openModal(name.replace(' Crédito','')+' · detalle',rows)}
-function projectionItems(until){let items=[];data.forecast.filter(x=>x.name!=='Bono'&&x.date>=START&&x.date<=until).forEach(x=>items.push({...x}));recurringIncomeItems(until).forEach(x=>items.push(x));recurringExpenseItems(until).forEach(x=>items.push(x));data.commitments.filter(x=>x.date>=START&&x.date<=until).forEach(x=>items.push({name:x.name,amount:x.amount,date:x.date,type:'out'}));knownInstallmentItems(until).forEach(x=>items.push(x));movementCreditItems(until).forEach(x=>items.push(x));for(const m of data.movements.filter(x=>x.date>=START&&x.date<=until)){if(m.type==='ingreso')items.push({name:m.desc||'Ingreso registrado',amount:m.amount,date:m.date,type:'in',real:true});if(m.type==='compra'&&(m.method==='Yape'||m.method==='Efectivo'))items.push({name:m.desc||m.category,amount:m.amount,date:m.date,type:'out',real:true});if(m.type==='pago_tarjeta')items.push({name:`Pago ${m.card}`,amount:m.amount,date:m.date,type:'out',real:true})}return items.sort((a,b)=>a.date.localeCompare(b.date))}
+function projectionItems(until){let items=[];
+ allIncomeOccurrences(until).filter(x=>x.date>=START&&occurrenceStatus(x)!=='paid').forEach(x=>items.push({...x,amount:scheduleRemaining(x)}));
+ allFixedOccurrences(until).filter(x=>x.date>=START&&x.name!=='Pasajes reservados'&&occurrenceStatus(x)!=='paid').forEach(x=>items.push({...x,amount:scheduleRemaining(x)}));
+ (data.commitments||[]).filter(x=>x.kind==='Tarjeta'&&x.date>=START&&x.date<=until&&occurrenceStatus(x)!=='paid').forEach(x=>items.push({...x,type:'out',amount:scheduleRemaining(x)}));
+ knownInstallmentItems(until).forEach(x=>items.push(x));movementCreditItems(until).forEach(x=>items.push(x));
+ for(const m of data.movements.filter(x=>x.date>=START&&x.date<=until)){if(m.type==='ingreso')items.push({name:m.desc||m.incomeType||'Ingreso registrado',amount:m.amount,date:m.date,type:'in',real:true});if(m.type==='compra'&&(m.method==='Yape'||m.method==='Efectivo'))items.push({name:m.desc||m.category,amount:m.amount,date:m.date,type:'out',real:true});if(m.type==='pago_tarjeta')items.push({name:`Pago ${m.card}`,amount:m.amount,date:m.date,type:'out',real:true})}
+ return items.sort((a,b)=>a.date.localeCompare(b.date))}
 function projectionValue(until,extra){let bal=Object.values(data.accounts).reduce((a,b)=>a+b,0),items=projectionItems(until);for(const x of items)bal+=x.type==='in'?x.amount:-x.amount;if(extra)bal-=extra;return {bal,items}}
 function setProjection(kind){let base=new Date('2026-09-26T12:00:00'),y=base.getFullYear(),m=base.getMonth(),day=base.getDate(),d;if(kind==='quincena'){if(day<15)d=new Date(y,m,15);else d=new Date(y,m+1,15)}else d=new Date(y,m+1,0);projectionDate.value=[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');renderProjection()}
 let projView='chrono',simulation=null;
@@ -382,6 +431,6 @@ function nextDueForCard(card,purchaseDate){let c=data.cards[card],d=new Date(pur
 function simulate(){let a=Number(simAmount.value),pd=simDate.value,method=simMethod.value;if(!a||!pd)return alert('Completa monto y fecha.');let impactDate=pd;if(data.cards[method])impactDate=nextDueForCard(method,pd);simulation={amount:a,purchaseDate:pd,method,impactDate};clearSimBtn.style.display='block';simResult.innerHTML=`<div class="simResult ok"><b>Simulación activa</b><div class=row><span>Compra</span><b>−${fmt(a)}</b></div><div class=row><span>Impacta</span><b>${dmy(impactDate)}</b></div><p class=tiny>No modifica tus saldos reales. Ya está incluida en la cronología y en la tabla por cortes.</p></div>`;renderProjection()}
 function clearSimulation(){simulation=null;clearSimBtn.style.display='none';simResult.innerHTML='';renderProjection()}
 function renderAll(){renderHome();renderMoves();renderDebts();renderProjection()}
-document.getElementById('todayLabel').textContent='Control iniciado el 26/09/2026 · V1.15';document.getElementById('simDate').value=today();document.getElementById('projectionDate').value='2026-12-31';setupChips();renderRegisterStart();renderAll();
+document.getElementById('todayLabel').textContent='Control iniciado el 26/09/2026 · V1.16';document.getElementById('simDate').value=today();document.getElementById('projectionDate').value='2026-12-31';setupChips();renderRegisterStart();renderAll();
 </script>
 </body></html>
